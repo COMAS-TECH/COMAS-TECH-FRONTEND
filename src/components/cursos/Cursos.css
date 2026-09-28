@@ -1,0 +1,10 @@
+.cursos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 28px;
+}
+
+.cursos__status {
+  text-align: center;
+  padding: 32px 0;
+}

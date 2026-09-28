@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import Navbar from './components/Navbar.jsx';
-import Hero from './components/Hero.jsx';
-import Cursos from './components/Cursos.jsx';
-import Capacitacion from './components/Capacitacion.jsx';
-import Nosotros from './components/Nosotros.jsx';
-import Contacto from './components/Contacto.jsx';
-import Footer from './components/Footer.jsx';
-import CheckoutModal from './components/CheckoutModal.jsx';
+import Navbar from './components/navbar/Navbar.jsx';
+import Hero from './components/hero/Hero.jsx';
+import Cursos from './components/cursos/Cursos.jsx';
+import Capacitacion from './components/capacitacion/Capacitacion.jsx';
+import Nosotros from './components/nosotros/Nosotros.jsx';
+import Contacto from './components/contacto/Contacto.jsx';
+import Footer from './components/footer/Footer.jsx';
+import CheckoutModal from './components/checkoutModal/CheckoutModal.jsx';
 
 export default function App() {
   const [cursoSeleccionado, setCursoSeleccionado] = useState(null);
@@ -14,11 +14,13 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <Hero />
-      <Cursos onInscribirme={setCursoSeleccionado} />
-      <Capacitacion />
-      <Nosotros />
-      <Contacto />
+      <main>
+        <Hero />
+        <Cursos onInscribirme={setCursoSeleccionado} />
+        <Capacitacion />
+        <Nosotros />
+        <Contacto />
+      </main>
       <Footer />
 
       {cursoSeleccionado && (
