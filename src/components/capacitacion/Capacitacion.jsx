@@ -25,8 +25,8 @@ export default function Capacitacion() {
       <div className="container">
         <h2 className="section__title">Capacitación</h2>
         <p className="section__subtitle">
-          Formamos a jóvenes de Comas con una metodología práctica orientada a
-          empleabilidad.
+          Formamos a personas de todas las edades con una metodología práctica
+          orientada a la empleabilidad y al crecimiento profesional.
         </p>
 
         <div className="capacitacion__grid">

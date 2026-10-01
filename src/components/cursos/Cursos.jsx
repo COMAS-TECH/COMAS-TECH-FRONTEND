@@ -1,57 +1,62 @@
 import { useEffect, useState } from 'react';
-import { getCourses } from '../../api/api.js';
 import CursoCard from '../cursoCard/CursoCard.jsx';
+import { getCourses } from '../../api/api.js';
 import './Cursos.css';
 
-export default function Cursos({ onInscribirme }) {
+export default function Cursos({ onInscribirme, limit }) {
   const [cursos, setCursos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let mounted = true;
+    let activo = true;
+
     getCourses()
       .then((data) => {
-        if (mounted) setCursos(data);
+        if (!activo) return;
+        // data puede ser array directo o { results: [...] }
+        const lista = Array.isArray(data) ? data : data.results || [];
+        setCursos(limit ? lista.slice(0, limit) : lista);
       })
-      .catch(() => {
-        if (mounted)
-          setError(
-            'No se pudieron cargar los cursos. Verifica que el backend esté en ejecución.'
-          );
+      .catch((err) => {
+        if (!activo) return;
+        console.error('Error al cargar cursos:', err);
+        setError('No se pudieron cargar los cursos. Verifica que el backend esté corriendo.');
       })
       .finally(() => {
-        if (mounted) setLoading(false);
+        if (activo) setLoading(false);
       });
+
     return () => {
-      mounted = false;
+      activo = false;
     };
-  }, []);
+  }, [limit]);
+
+  if (loading) {
+    return <p className="text-muted cursos__status">Cargando cursos...</p>;
+  }
+
+  if (error) {
+    return <p className="text-error cursos__status">{error}</p>;
+  }
+
+  if (cursos.length === 0) {
+    return (
+      <p className="text-muted cursos__status">
+        No hay cursos disponibles por el momento.
+      </p>
+    );
+  }
 
   return (
-    <section id="cursos" className="section">
-      <div className="container">
-        <h2 className="section__title">Nuestros cursos</h2>
-        <p className="section__subtitle">
-          Elige el curso, revisa su plan de pago y matrículate sin necesidad de
-          crear una cuenta.
-        </p>
-
-        {loading && <p className="text-muted cursos__status">Cargando cursos...</p>}
-        {error && <p className="text-error cursos__status">{error}</p>}
-
-        {!loading && !error && (
-          <div className="cursos__grid">
-            {cursos.map((curso) => (
-              <CursoCard
-                key={curso.id}
-                curso={curso}
-                onInscribirme={onInscribirme}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
+    <div className="cursos__grid">
+      {cursos.map((curso) => (
+        <CursoCard
+          key={curso.id}
+          curso={curso}
+          onInscribirme={onInscribirme}
+        />
+      ))}
+    </div>
   );
 }

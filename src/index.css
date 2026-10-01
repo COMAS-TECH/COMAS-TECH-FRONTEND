@@ -3,7 +3,6 @@
    ============================================ */
 
 :root {
-  /* Tema claro (por defecto) */
   --color-bg: #ffffff;
   --color-bg-alt: #f8fafc;
   --color-surface: #ffffff;
@@ -87,7 +86,6 @@ textarea {
   font-family: inherit;
 }
 
-/* Utilidades compartidas */
 .container {
   width: 100%;
   max-width: 1180px;
@@ -179,7 +177,6 @@ textarea {
   font-weight: 600;
 }
 
-/* Formularios globales */
 .form {
   display: flex;
   flex-direction: column;
@@ -242,4 +239,53 @@ textarea {
   .section__title {
     font-size: 1.6rem;
   }
+}
+/* ============================================
+   VALIDACIÓN DE CAMPOS
+   ============================================ */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  position: relative;
+}
+
+.field__error {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-error);
+  margin-top: 2px;
+}
+
+.field__counter {
+  font-size: 0.72rem;
+  text-align: right;
+  margin-top: 2px;
+}
+
+/* Input con error */
+.has-error input,
+.has-error select,
+.has-error textarea {
+  border-color: var(--color-error) !important;
+  background: rgba(185, 28, 28, 0.04);
+}
+
+.has-error input:focus,
+.has-error select:focus,
+.has-error textarea:focus {
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15) !important;
+}
+
+[data-theme='dark'] .has-error input,
+[data-theme='dark'] .has-error select,
+[data-theme='dark'] .has-error textarea {
+  background: rgba(248, 113, 113, 0.06);
+}
+
+/* Botón block reutilizable */
+.btn--block {
+  width: 100%;
 }

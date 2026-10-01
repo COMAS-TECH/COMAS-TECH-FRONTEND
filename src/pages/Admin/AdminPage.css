@@ -1,0 +1,90 @@
+.admin__stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.admin__stat {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  text-align: center;
+}
+
+.admin__stat span {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  display: block;
+}
+
+.admin__stat p {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.admin__filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.admin__filter {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: all var(--transition);
+  text-transform: capitalize;
+}
+
+.admin__filter.is-active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.admin__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.admin__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin__table th,
+.admin__table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin__table th {
+  background: var(--color-bg-alt);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.admin__actions {
+  display: flex;
+  gap: 6px;
+}
+
+@media (max-width: 860px) {
+  .admin__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

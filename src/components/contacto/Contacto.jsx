@@ -1,105 +1,135 @@
 import { useState } from 'react';
 import { sendContact } from '../../api/api.js';
+import useFormValidation from '../../hooks/useFormValidation.js';
 import './Contacto.css';
 
-const initialForm = { name: '', email: '', message: '' };
-
 export default function Contacto() {
-  const [form, setForm] = useState(initialForm);
-  const [status, setStatus] = useState(null);
+  const form = useFormValidation({ name: '', email: '', message: '' });
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+
+    if (!form.validateAll()) {
+      setError('Revisa los campos marcados en rojo.');
+      return;
+    }
+
     setLoading(true);
-    setStatus(null);
     try {
-      await sendContact(form);
-      setStatus('ok');
-      setForm(initialForm);
-    } catch {
-      setStatus('error');
+      await sendContact({
+        name: form.values.name.trim(),
+        email: form.values.email.trim().toLowerCase(),
+        message: form.values.message.trim(),
+      });
+      setSent(true);
+      form.reset();
+    } catch (err) {
+      setError(err?.response?.data?.message || 'No se pudo enviar el mensaje.');
     } finally {
       setLoading(false);
     }
   };
 
+  const fieldClass = (name) =>
+    `field ${form.errors[name] && form.touched[name] ? 'has-error' : ''}`;
+  const errorMsg = (name) =>
+    form.errors[name] && form.touched[name] ? (
+      <span className="field__error">{form.errors[name]}</span>
+    ) : null;
+
   return (
     <section id="contacto" className="section section--alt">
-      <div className="container contacto">
+      <div className="container contacto__inner">
         <div className="contacto__info">
-          <h2 className="section__title" style={{ textAlign: 'left' }}>
-            Contacto
-          </h2>
-          <p className="contacto__lead">
-            ¿Tienes dudas sobre algún curso? Escríbenos y te responderemos a la
-            brevedad.
+          <h2 className="section__title contacto__title">Contacto</h2>
+          <p>
+            ¿Tienes dudas sobre nuestros cursos, horarios o pagos? Escríbenos y
+            te respondemos en menos de 24 horas.
           </p>
-
           <ul className="contacto__list">
             <li>
-              <span className="contacto__label">Dirección</span>
-              <span>Comas, Lima - Perú</span>
+              <strong>Dirección:</strong> Av. Universitaria 1234, Comas, Lima
             </li>
             <li>
-              <span className="contacto__label">Teléfono</span>
-              <span>+51 987 654 321</span>
+              <strong>WhatsApp:</strong> +51 987 654 321
             </li>
             <li>
-              <span className="contacto__label">Correo</span>
-              <span>contacto@comastech.pe</span>
+              <strong>Email:</strong> hola@comastech.pe
             </li>
           </ul>
         </div>
 
-        <form className="form" onSubmit={handleSubmit}>
-          <label>
+        <form className="form" onSubmit={handleSubmit} noValidate>
+          <label className={fieldClass('full_name')}>
             Nombre
             <input
               name="name"
-              value={form.name}
-              onChange={handleChange}
+              value={form.values.name}
+              onChange={(e) =>
+                form.handleChange({
+                  target: { name: 'full_name', value: e.target.value },
+                })
+              }
+              onBlur={(e) =>
+                form.handleBlur({
+                  target: { name: 'full_name', value: e.target.value },
+                })
+              }
+              maxLength={100}
+              autoComplete="name"
               required
             />
+            {form.errors.full_name && form.touched.full_name ? (
+              <span className="field__error">{form.errors.full_name}</span>
+            ) : null}
           </label>
-          <label>
+
+          <label className={fieldClass('email')}>
             Correo
             <input
               type="email"
               name="email"
-              value={form.email}
-              onChange={handleChange}
+              value={form.values.email}
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              maxLength={150}
+              autoComplete="email"
               required
             />
+            {errorMsg('email')}
           </label>
-          <label>
+
+          <label className={fieldClass('message')}>
             Mensaje
             <textarea
               name="message"
               rows="4"
-              value={form.message}
-              onChange={handleChange}
+              value={form.values.message}
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
+              maxLength={500}
               required
             />
+            {errorMsg('message')}
+            <span className="field__counter text-muted">
+              {form.values.message.length}/500
+            </span>
           </label>
 
-          <button className="btn" type="submit" disabled={loading}>
+          {sent && (
+            <p className="text-success">
+              ¡Mensaje enviado! Te contactaremos pronto.
+            </p>
+          )}
+          {error && <p className="text-error">{error}</p>}
+
+          <button className="btn btn--block" type="submit" disabled={loading}>
             {loading ? 'Enviando...' : 'Enviar mensaje'}
           </button>
-
-          {status === 'ok' && (
-            <p className="text-success">
-              Mensaje enviado. Te responderemos pronto.
-            </p>
-          )}
-          {status === 'error' && (
-            <p className="text-error">
-              No se pudo enviar el mensaje. Intenta de nuevo.
-            </p>
-          )}
         </form>
       </div>
     </section>

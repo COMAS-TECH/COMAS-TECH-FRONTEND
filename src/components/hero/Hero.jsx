@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Hero.css';
 
 export default function Hero() {
@@ -5,43 +6,29 @@ export default function Hero() {
     <section id="inicio" className="hero">
       <div className="container hero__inner">
         <div className="hero__content">
-          <span className="hero__badge">Programa de formación digital</span>
+          <span className="hero__badge">Comas TECH</span>
           <h1 className="hero__title">
-            Competencias digitales para jóvenes de Comas
+            Aprende las <span>competencias digitales</span> que el futuro pide
           </h1>
-          <p className="hero__text">
-            Cursos prácticos en programación, ciberseguridad, diseño y
-            automatización con inteligencia artificial. Aprende con proyectos
-            reales y obtén tu certificación.
-          </p>
+ <p className="hero__text">
+  Cursos prácticos de programación, ciberseguridad, diseño y
+  automatización con IA para personas de todas las edades en Comas, Lima.
+</p>
           <div className="hero__actions">
-            <a href="#cursos" className="btn">
+            <Link to="/cursos" className="btn">
               Ver cursos
-            </a>
-            <a href="#contacto" className="btn btn--ghost">
-              Solicitar información
-            </a>
+            </Link>
+            <Link to="/contacto" className="btn btn--ghost">
+              Contáctanos
+            </Link>
           </div>
-
-          <ul className="hero__stats">
-            <li>
-              <strong>4</strong>
-              <span>Cursos activos</span>
-            </li>
-            <li>
-              <strong>100%</strong>
-              <span>Práctico</span>
-            </li>
-            <li>
-              <strong>Certificado</strong>
-              <span>Al finalizar</span>
-            </li>
-          </ul>
         </div>
 
-        <div className="hero__art" aria-hidden="true">
-          <div className="hero__shape hero__shape--primary" />
-          <div className="hero__shape hero__shape--accent" />
+        <div className="hero__image">
+          <img
+            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80"
+            alt="Jóvenes aprendiendo tecnología"
+          />
         </div>
       </div>
     </section>

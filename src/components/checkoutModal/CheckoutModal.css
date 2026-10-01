@@ -1,3 +1,7 @@
+/* ============================================
+   CHECKOUT MODAL — Diseño limpio y ordenado
+   ============================================ */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -14,8 +18,8 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 32px;
-  max-width: 520px;
+  padding: 32px 28px 28px;
+  max-width: 480px;
   width: 100%;
   max-height: 92vh;
   overflow-y: auto;
@@ -24,18 +28,24 @@
   animation: slideUp 0.2s ease;
 }
 
+/* ---------- Botón cerrar ---------- */
 .modal__close {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 14px;
+  right: 14px;
   background: transparent;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   line-height: 1;
   color: var(--color-text-muted);
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background var(--transition), color var(--transition);
+  z-index: 1;
 }
 
 .modal__close:hover {
@@ -43,18 +53,165 @@
   color: var(--color-text);
 }
 
+/* ============================================
+   BARRA DE PROGRESO
+   ============================================ */
+.checkout-steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding: 0 6px;
+}
+
+.checkout-steps__bar {
+  position: absolute;
+  top: 14px;
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  background: var(--color-border);
+  border-radius: 2px;
+  z-index: 0;
+}
+
+.checkout-steps__bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.checkout-step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.checkout-step__num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: all var(--transition);
+}
+
+.checkout-step.is-active .checkout-step__num {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.checkout-step.is-done .checkout-step__num {
+  border-color: var(--color-success);
+  background: var(--color-success);
+  color: #fff;
+}
+
+.checkout-step__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+}
+
+.checkout-step.is-active .checkout-step__label,
+.checkout-step.is-done .checkout-step__label {
+  color: var(--color-text);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
 .modal__header {
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .modal__header h3 {
   color: var(--color-text);
-  font-size: 1.25rem;
+  font-size: 1.3rem;
+  font-weight: 700;
   margin-bottom: 4px;
 }
 
 .modal__header p {
   font-size: 0.9rem;
+}
+
+/* ============================================
+   PASO 1: FORMULARIO
+   ============================================ */
+.checkout-paso {
+  animation: fadeIn 0.2s ease;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 0;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 0.95rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.12);
+}
+
+[data-theme='dark'] .form input:focus,
+[data-theme='dark'] .form select:focus,
+[data-theme='dark'] .form textarea:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  min-width: 0;
+}
+
+.form__row > label {
+  min-width: 0;
 }
 
 .modal__field {
@@ -82,13 +239,13 @@
   gap: 8px;
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-sm);
-  padding: 11px;
+  padding: 12px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.9rem;
   color: var(--color-text-muted);
-  transition: border-color var(--transition), color var(--transition),
-    background var(--transition);
+  transition: all var(--transition);
+  user-select: none;
 }
 
 .metodo input {
@@ -101,99 +258,256 @@
   color: var(--color-primary);
 }
 
-.pago-yape,
-.pago-tarjeta {
+/* ============================================
+   BOTONES
+   ============================================ */
+.btn--block {
+  width: 100%;
+}
+
+/* ============================================
+   PASO 2: PAGO
+   ============================================ */
+.checkout-summary {
   background: var(--color-bg-alt);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-}
-
-.pago-tarjeta {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.pago-tarjeta label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.pago-tarjeta input {
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 11px 14px;
-  font-size: 0.95rem;
-  background: var(--color-surface);
-  color: var(--color-text);
-}
-
-.pago-tarjeta input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.12);
-}
-
-.modal__note {
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
-
-.modal__success {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  text-align: center;
-  padding: 8px 0;
-}
-
-.modal__success-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--color-success);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 0.9rem;
-  margin: 0 auto;
-  letter-spacing: 0.05em;
-}
-
-.modal__summary {
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  text-align: left;
-  background: var(--color-bg-alt);
-  padding: 16px;
-  border-radius: var(--radius-sm);
 }
 
-.modal__summary div {
+.checkout-summary__row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.9rem;
 }
 
-.modal__summary dt {
+.checkout-summary__amount {
+  font-size: 1.15rem;
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.pago-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.pago-tab {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.pago-tab:hover {
+  border-color: var(--tab-color, var(--color-primary));
+  color: var(--tab-color, var(--color-primary));
+}
+
+.pago-tab.is-active {
+  border-color: var(--tab-color, var(--color-primary));
+  background: var(--tab-color, var(--color-primary));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pago-card {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.pago-card__qr {
+  flex-shrink: 0;
+  width: 130px;
+  height: 130px;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.pago-card__qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.pago-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pago-card__badge {
+  display: inline-block;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.pago-card__label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.pago-card__number {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+  margin: 2px 0 6px;
+  word-break: break-word;
+}
+
+.pago-card__holder {
+  font-size: 0.85rem;
   color: var(--color-text-muted);
 }
 
-.modal__summary dd {
+/* ============================================
+   SUBIR COMPROBANTE
+   ============================================ */
+.upload-receipt {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.upload-receipt__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 24px 16px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+  background: var(--color-surface);
+}
+
+.upload-receipt__label:hover {
+  border-color: var(--color-primary);
+  background: var(--color-bg-alt);
+}
+
+.upload-receipt__label.has-file {
+  border-color: var(--color-success);
+  border-style: solid;
+  background: rgba(21, 128, 61, 0.05);
+}
+
+.upload-receipt__label input {
+  display: none;
+}
+
+.upload-receipt__icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.upload-receipt__text {
+  font-weight: 700;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.upload-receipt__hint {
+  font-size: 0.78rem;
+}
+
+.upload-receipt__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.upload-receipt__divider::before,
+.upload-receipt__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.upload-receipt__wa {
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   PASO 3: ÉXITO
+   ============================================ */
+.modal__success {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  padding: 8px 0;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal__success-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-success);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 8px 20px rgba(21, 128, 61, 0.3);
+}
+
+.modal__success h3 {
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-text);
 }
 
+.modal__note {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -204,8 +518,44 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 560px) {
   .modal {
-    padding: 24px 20px;
+    padding: 24px 18px 22px;
+    max-width: 100%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 95vh;
+    align-self: flex-end;
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .pago-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .pago-card__qr {
+    width: 170px;
+    height: 170px;
+    margin: 0 auto;
+  }
+
+  .checkout-steps {
+    margin-bottom: 22px;
+  }
+
+  .checkout-step__label {
+    font-size: 0.7rem;
   }
 }

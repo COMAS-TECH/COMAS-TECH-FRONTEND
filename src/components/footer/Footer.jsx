@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 export default function Footer() {
@@ -10,14 +11,14 @@ export default function Footer() {
           <span className="footer__logo">
             Comas<span>TECH</span>
           </span>
-          <p>Competencias digitales para jóvenes de Comas.</p>
+         <p>Competencias digitales para todas las edades en Comas.</p>
         </div>
 
         <nav className="footer__links">
-          <a href="#cursos">Cursos</a>
-          <a href="#capacitacion">Capacitación</a>
-          <a href="#nosotros">Nosotros</a>
-          <a href="#contacto">Contacto</a>
+          <Link to="/cursos">Cursos</Link>
+          <Link to="/capacitacion">Capacitación</Link>
+          <Link to="/nosotros">Nosotros</Link>
+          <Link to="/contacto">Contacto</Link>
         </nav>
       </div>
 

@@ -1,0 +1,81 @@
+.mis-cursos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.mis-cursos__card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mis-cursos__card img {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  width: 100%;
+}
+
+.mis-cursos__card h3,
+.mis-cursos__card p,
+.mis-cursos__card .mis-cursos__badge {
+  margin: 0 20px;
+}
+
+.mis-cursos__card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+.mis-cursos__badge {
+  align-self: flex-start;
+  background: var(--color-success);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.mis-cursos__h2 {
+  font-size: 1.4rem;
+  margin-top: 48px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.mis-cursos__pending {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mis-cursos__pending li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+}
+
+.status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.status--pendiente { background: #fef3c7; color: #92400e; }
+.status--en_revision { background: #dbeafe; color: #1e40af; }
+.status--pagado { background: #dcfce7; color: #166534; }
+.status--rechazado { background: #fee2e2; color: #991b1b; }
