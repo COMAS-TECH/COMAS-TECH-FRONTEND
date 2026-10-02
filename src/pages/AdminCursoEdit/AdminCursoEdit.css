@@ -1,0 +1,100 @@
+.admin-curso__form {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.admin-curso__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.admin-curso__frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #0f172a;
+  display: grid;
+  place-items: center;
+}
+
+.admin-curso__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-curso__placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.admin-curso__upload {
+  cursor: pointer;
+}
+
+.admin-curso__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-curso__fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.admin-curso__fields input,
+.admin-curso__fields textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font: inherit;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.admin-curso__fields input:focus,
+.admin-curso__fields textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.admin-curso__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.admin-curso__check {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px !important;
+}
+
+.admin-curso__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .admin-curso__form {
+    grid-template-columns: 1fr;
+  }
+  .admin-curso__row {
+    grid-template-columns: 1fr;
+  }
+}

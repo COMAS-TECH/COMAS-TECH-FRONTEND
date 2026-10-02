@@ -1,5 +1,6 @@
 import Hero from '../../components/hero/Hero.jsx';
 import Cursos from '../../components/cursos/Cursos.jsx';
+import HomeVideo from '../../components/HomeVideo/HomeVideo.jsx';
 import { Link } from 'react-router-dom';
 import './Home.css';
 
@@ -8,6 +9,10 @@ export default function Home({ onInscribirme }) {
     <>
       <Hero />
 
+      {/* Video */}
+      <HomeVideo />
+
+      {/* Cursos destacados */}
       <section className="section">
         <div className="container">
           <h2 className="section__title">Cursos destacados</h2>

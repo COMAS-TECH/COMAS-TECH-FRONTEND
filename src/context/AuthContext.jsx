@@ -3,6 +3,12 @@ import { getMe, loginUser, registerUser } from '../api/api.js';
 
 const AuthContext = createContext(null);
 
+// Acepta { user: {...} } o { id, role, ... } directo
+function normalizeUser(data) {
+  if (!data) return null;
+  return data.user ?? data;
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,7 +20,7 @@ export function AuthProvider({ children }) {
       return;
     }
     getMe()
-      .then((data) => setUser(data.user))
+      .then((data) => setUser(normalizeUser(data)))
       .catch(() => {
         localStorage.removeItem('comastech-token');
         setUser(null);
@@ -25,15 +31,17 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const data = await loginUser({ email, password });
     localStorage.setItem('comastech-token', data.token);
-    setUser(data.user);
-    return data.user;
+    const u = normalizeUser(data);
+    setUser(u);
+    return u;
   };
 
   const register = async (payload) => {
     const data = await registerUser(payload);
     localStorage.setItem('comastech-token', data.token);
-    setUser(data.user);
-    return data.user;
+    const u = normalizeUser(data);
+    setUser(u);
+    return u;
   };
 
   const logout = () => {

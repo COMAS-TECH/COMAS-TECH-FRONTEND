@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api',
-  timeout: 15000,
+  timeout: 60000, // 60s para que aguante subir videos
 });
 
 // Inyecta el token en cada request si existe
@@ -23,7 +23,8 @@ export const getMe = () => api.get('/auth/me').then((r) => r.data);
 
 // ---------- CURSOS ----------
 export const getCourses = () => api.get('/courses').then((r) => r.data);
-export const getCourseById = (id) => api.get(`/courses/${id}`).then((r) => r.data);
+export const getCourseById = (id) =>
+  api.get(`/courses/${id}`).then((r) => r.data);
 
 // ---------- ORDENES ----------
 export const createOrder = (payload) =>
@@ -41,7 +42,7 @@ export const getMyOrders = () => api.get('/orders/me').then((r) => r.data);
 export const getMyCourses = () =>
   api.get('/orders/me/courses').then((r) => r.data);
 
-// ---------- ADMIN ----------
+// ---------- ADMIN: ÓRDENES ----------
 export const adminStats = () => api.get('/admin/stats').then((r) => r.data);
 export const adminListOrders = (status) =>
   api
@@ -49,6 +50,29 @@ export const adminListOrders = (status) =>
     .then((r) => r.data);
 export const adminUpdateOrder = (id, payload) =>
   api.patch(`/admin/orders/${id}`, payload).then((r) => r.data);
+
+// ---------- ADMIN: CURSOS ----------
+export const adminUpdateCourse = (id, formData) =>
+  api
+    .put(`/courses/${id}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    .then((r) => r.data);
+
+// ---------- SETTINGS (público) ----------
+export const getHomeVideo = () =>
+  api.get('/settings/home-video').then((r) => r.data);
+
+// ---------- SETTINGS (admin) ----------
+export const adminUpdateHomeVideo = (formData) =>
+  api
+    .put('/settings/home-video', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    .then((r) => r.data);
+
+export const adminDeleteHomeVideo = () =>
+  api.delete('/settings/home-video').then((r) => r.data);
 
 // ---------- CONTACTO ----------
 export const sendContact = (payload) =>

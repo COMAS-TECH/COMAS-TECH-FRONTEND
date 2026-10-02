@@ -5,27 +5,41 @@ import {
   adminListOrders,
   adminUpdateOrder,
 } from '../../api/api.js';
-import { useAuth } from '../../context/AuthContext.jsx';
+import { resolveImageUrl } from '../../utils/imageUrl.js';
 import './AdminPage.css';
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || '';
-
 export default function AdminPage() {
-  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [orders, setOrders] = useState([]);
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (authLoading) return;
-    if (!user || user.role !== 'admin') {
-      navigate('/');
-      return;
-    }
-    load();
-  }, [user, authLoading, filter]);
+    let activo = true;
+    setLoading(true);
+    Promise.all([
+      adminStats(),
+      adminListOrders(filter || undefined),
+    ])
+      .then(([s, o]) => {
+        if (!activo) return;
+        setStats(s);
+        setOrders(o);
+      })
+      .catch((err) => {
+        if (!activo) return;
+        console.error('Error cargando admin:', err);
+        setError('No se pudieron cargar los datos');
+      })
+      .finally(() => {
+        if (activo) setLoading(false);
+      });
+    return () => {
+      activo = false;
+    };
+  }, [filter]);
 
   const load = async () => {
     setLoading(true);
@@ -52,7 +66,7 @@ export default function AdminPage() {
     load();
   };
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <section className="section">
         <div className="container">
@@ -65,9 +79,35 @@ export default function AdminPage() {
   return (
     <section className="section">
       <div className="container">
-        <h1 className="section__title">Panel de administrador</h1>
+        <div className="admin__header">
+          <h1 className="section__title">Panel de administrador</h1>
+          <div className="admin__header-actions">
+            <button
+              className="btn btn--sm btn--ghost"
+              type="button"
+              onClick={() => navigate('/cursos')}
+            >
+              Ver catálogo
+            </button>
+            <button
+              className="btn btn--sm btn--ghost"
+              type="button"
+              onClick={() => navigate('/admin/video')}
+            >
+              Video de la Home
+            </button>
+            <button
+              className="btn btn--sm"
+              type="button"
+              onClick={() => navigate('/admin/cursos')}
+            >
+              Gestionar cursos
+            </button>
+          </div>
+        </div>
 
-        {/* Stats */}
+        {error && <p className="text-error">{error}</p>}
+
         {stats && (
           <div className="admin__stats">
             <div className="admin__stat">
@@ -76,7 +116,7 @@ export default function AdminPage() {
             </div>
             <div className="admin__stat">
               <span>{stats.total_orders}</span>
-              <p>Ordenes</p>
+              <p>Órdenes</p>
             </div>
             <div className="admin__stat">
               <span>{stats.pending_orders}</span>
@@ -93,7 +133,6 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Filtros */}
         <div className="admin__filters">
           {['', 'pendiente', 'en_revision', 'pagado', 'rechazado'].map((s) => (
             <button
@@ -107,7 +146,6 @@ export default function AdminPage() {
           ))}
         </div>
 
-        {/* Tabla */}
         <div className="admin__table-wrap">
           <table className="admin__table">
             <thead>
@@ -115,7 +153,7 @@ export default function AdminPage() {
                 <th>#</th>
                 <th>Usuario</th>
                 <th>Curso</th>
-                <th>Metodo</th>
+                <th>Método</th>
                 <th>Monto</th>
                 <th>Comprobante</th>
                 <th>Estado</th>
@@ -125,8 +163,8 @@ export default function AdminPage() {
             <tbody>
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan="8" style={{ textAlign: 'center' }}>
-                    Sin ordenes
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '24px' }}>
+                    <span className="text-muted">Sin órdenes</span>
                   </td>
                 </tr>
               )}
@@ -137,13 +175,38 @@ export default function AdminPage() {
                     <div>{o.user_full_name || o.full_name}</div>
                     <small className="text-muted">{o.email}</small>
                   </td>
-                  <td>{o.course_title}</td>
+                  <td>
+                    <div className="admin__course-cell">
+                      {o.course_image_url && (
+                        <img
+                          src={resolveImageUrl(o.course_image_url)}
+                          alt={o.course_title}
+                          className="admin__course-thumb"
+                          loading="lazy"
+                        />
+                      )}
+                      <div className="admin__course-info">
+                        <strong>{o.course_title}</strong>
+                        {o.course_id && (
+                          <button
+                            className="admin__link-btn"
+                            type="button"
+                            onClick={() =>
+                              navigate(`/admin/cursos/${o.course_id}`)
+                            }
+                          >
+                            Editar portada
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </td>
                   <td>{o.payment_method}</td>
                   <td>S/ {Number(o.amount).toFixed(2)}</td>
                   <td>
                     {o.receipt_url ? (
                       <a
-                        href={`${API_BASE}${o.receipt_url}`}
+                        href={resolveImageUrl(o.receipt_url)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
