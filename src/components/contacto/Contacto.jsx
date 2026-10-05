@@ -64,28 +64,18 @@ export default function Contacto() {
         </div>
 
         <form className="form" onSubmit={handleSubmit} noValidate>
-          <label className={fieldClass('full_name')}>
+          <label className={fieldClass('name')}>
             Nombre
             <input
               name="name"
               value={form.values.name}
-              onChange={(e) =>
-                form.handleChange({
-                  target: { name: 'full_name', value: e.target.value },
-                })
-              }
-              onBlur={(e) =>
-                form.handleBlur({
-                  target: { name: 'full_name', value: e.target.value },
-                })
-              }
+              onChange={form.handleChange}
+              onBlur={form.handleBlur}
               maxLength={100}
               autoComplete="name"
               required
             />
-            {form.errors.full_name && form.touched.full_name ? (
-              <span className="field__error">{form.errors.full_name}</span>
-            ) : null}
+            {errorMsg('name')}
           </label>
 
           <label className={fieldClass('email')}>

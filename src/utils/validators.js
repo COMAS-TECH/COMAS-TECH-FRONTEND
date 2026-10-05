@@ -57,28 +57,6 @@ export const isValidMessage = (msg) => {
   return m.length >= 10 && m.length <= 500;
 };
 
-/** Formato MM/AA con validación real del mes */
-export const isValidCardExpiry = (value) => {
-  const clean = onlyDigits(value);
-  if (clean.length !== 4) return false;
-  const month = Number(clean.slice(0, 2));
-  return month >= 1 && month <= 12;
-};
-
-/** Vencimiento de tarjeta formateado a MM/AA */
-export const formatCardExpiry = (value) => {
-  const clean = onlyDigits(value).slice(0, 4);
-  if (clean.length <= 2) return clean;
-  return `${clean.slice(0, 2)}/${clean.slice(2)}`;
-};
-
-/** Máscara para número de tarjeta: 0000 0000 0000 0000 */
-export const formatCardNumber = (value) =>
-  onlyDigits(value)
-    .slice(0, 16)
-    .replace(/(.{4})/g, '$1 ')
-    .trim();
-
 // ============================================
 // REGLAS POR CAMPO
 // ============================================
@@ -126,23 +104,5 @@ export const RULES = {
     sanitize: (v) => sanitizeText(v).slice(0, 500),
     validate: (v) =>
       isValidMessage(v) ? null : 'El mensaje debe tener 10 a 500 caracteres.',
-  },
-  card_number: {
-    maxLength: 19,
-    sanitize: (v) => formatCardNumber(v),
-    validate: (v) =>
-      onlyDigits(v).length === 16 ? null : 'La tarjeta debe tener 16 dígitos.',
-  },
-  card_expiry: {
-    maxLength: 5,
-    sanitize: (v) => formatCardExpiry(v),
-    validate: (v) =>
-      isValidCardExpiry(v) ? null : 'Formato MM/AA inválido.',
-  },
-  card_cvv: {
-    maxLength: 4,
-    sanitize: (v) => numericInput(v, 4),
-    validate: (v) =>
-      onlyDigits(v).length >= 3 ? null : 'El CVV debe tener 3 o 4 dígitos.',
   },
 };

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getMyOrders, getMyCourses } from '../../api/api.js';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { resolveImageUrl } from '../../utils/imageUrl.js';
 import './MisCursosPage.css';
 
 export default function MisCursosPage() {
@@ -9,6 +10,7 @@ export default function MisCursosPage() {
   const [cursos, setCursos] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!user) {
@@ -20,6 +22,7 @@ export default function MisCursosPage() {
         setCursos(c);
         setOrders(o);
       })
+      .catch(() => setError('No se pudieron cargar tus cursos'))
       .finally(() => setLoading(false));
   }, [user]);
 
@@ -60,6 +63,8 @@ export default function MisCursosPage() {
           Hola {user.full_name}, aqui estan tus cursos activos.
         </p>
 
+        {error && <p className="text-error">{error}</p>}
+
         {cursos.length === 0 ? (
           <p className="text-muted" style={{ textAlign: 'center' }}>
             Aun no tienes cursos abiertos.{' '}
@@ -69,7 +74,9 @@ export default function MisCursosPage() {
           <div className="mis-cursos__grid">
             {cursos.map((c) => (
               <article key={c.enrollment_id} className="mis-cursos__card">
-                {c.image_url && <img src={c.image_url} alt={c.title} />}
+                {c.image_url && (
+                  <img src={resolveImageUrl(c.image_url)} alt={c.title} />
+                )}
                 <h3>{c.title}</h3>
                 <p className="text-muted">{c.description}</p>
                 <span className="mis-cursos__badge">Abierto</span>

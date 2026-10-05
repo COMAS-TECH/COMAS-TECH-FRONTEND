@@ -4,6 +4,7 @@ import {
   adminStats,
   adminListOrders,
   adminUpdateOrder,
+  getReceiptFile,
 } from '../../api/api.js';
 import { resolveImageUrl } from '../../utils/imageUrl.js';
 import './AdminPage.css';
@@ -15,6 +16,8 @@ export default function AdminPage() {
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [receipt, setReceipt] = useState(null); // { url, type } del comprobante abierto
+  const [receiptLoading, setReceiptLoading] = useState(false);
 
   useEffect(() => {
     let activo = true;
@@ -66,6 +69,19 @@ export default function AdminPage() {
     load();
   };
 
+  const handleViewReceipt = async (o) => {
+    if (!o.receipt_url) return;
+    setReceiptLoading(true);
+    try {
+      const file = await getReceiptFile(o.receipt_url);
+      setReceipt(file);
+    } catch {
+      alert('No se pudo abrir el comprobante. Verifica tu sesión.');
+    } finally {
+      setReceiptLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <section className="section">
@@ -77,10 +93,11 @@ export default function AdminPage() {
   }
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="admin__header">
-          <h1 className="section__title">Panel de administrador</h1>
+    <>
+      <section className="section">
+        <div className="container">
+          <div className="admin__header">
+            <h1 className="section__title">Panel de administrador</h1>
           <div className="admin__header-actions">
             <button
               className="btn btn--sm btn--ghost"
@@ -205,13 +222,13 @@ export default function AdminPage() {
                   <td>S/ {Number(o.amount).toFixed(2)}</td>
                   <td>
                     {o.receipt_url ? (
-                      <a
-                        href={resolveImageUrl(o.receipt_url)}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        type="button"
+                        className="admin__link-btn"
+                        onClick={() => handleViewReceipt(o)}
                       >
-                        Ver
-                      </a>
+                        {receiptLoading ? 'Cargando...' : 'Ver'}
+                      </button>
                     ) : (
                       <span className="text-muted">—</span>
                     )}
@@ -248,5 +265,42 @@ export default function AdminPage() {
         </div>
       </div>
     </section>
+
+      {receipt && (
+        <div
+          className="modal-overlay"
+          onClick={() => setReceipt(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="modal admin__receipt-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="modal__close"
+              onClick={() => setReceipt(null)}
+              aria-label="Cerrar"
+              type="button"
+            >
+              ×
+            </button>
+            {receipt.type.includes('pdf') ? (
+              <iframe
+                src={receipt.url}
+                title="Comprobante de pago"
+                className="admin__receipt-frame"
+              />
+            ) : (
+              <img
+                src={receipt.url}
+                alt="Comprobante de pago"
+                className="admin__receipt-img"
+              />
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

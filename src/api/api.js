@@ -5,6 +5,12 @@ const api = axios.create({
   timeout: 60000, // 60s para que aguante subir videos
 });
 
+// Base del servidor SIN /api (para archivos de /uploads)
+const FILE_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:4000/api').replace(
+  /\/api\/?$/,
+  ''
+);
+
 // Inyecta el token en cada request si existe
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('comastech-token');
@@ -41,6 +47,19 @@ export const uploadReceipt = (orderId, file) => {
 export const getMyOrders = () => api.get('/orders/me').then((r) => r.data);
 export const getMyCourses = () =>
   api.get('/orders/me/courses').then((r) => r.data);
+
+// ---------- ARCHIVOS PROTEGIDOS (comprobantes con token) ----------
+// Descarga el comprobante con la sesion del usuario (el backend lo exige)
+// y devuelve una URL temporal para mostrarlo.
+export const getReceiptFile = (receiptUrl) => {
+  const token = localStorage.getItem('comastech-token');
+  return axios
+    .get(`${FILE_BASE}${receiptUrl}`, {
+      responseType: 'blob',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+    .then((r) => ({ url: URL.createObjectURL(r.data), type: r.data.type || '' }));
+};
 
 // ---------- ADMIN: ÓRDENES ----------
 export const adminStats = () => api.get('/admin/stats').then((r) => r.data);
