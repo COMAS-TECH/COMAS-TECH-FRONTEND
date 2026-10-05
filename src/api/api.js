@@ -1,15 +1,18 @@
 import axios from 'axios';
 
+// Base del servidor SIN /api (para archivos de /uploads)
+const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:4000/api').replace(
+  /\/api\/?$/,
+  ''
+);
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api',
   timeout: 60000, // 60s para que aguante subir videos
 });
 
-// Base del servidor SIN /api (para archivos de /uploads)
-const FILE_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:4000/api').replace(
-  /\/api\/?$/,
-  ''
-);
+// Imagen por defecto para portadas de cursos
+export const DEFAULT_COURSE_IMAGE = `${API_BASE}/uploads/courses/imagen_defecto.jpg`;
 
 // Inyecta el token en cada request si existe
 api.interceptors.request.use((config) => {
@@ -35,15 +38,15 @@ export const getCourseById = (id) =>
 // ---------- ORDENES ----------
 export const createOrder = (payload) =>
   api.post('/orders', payload).then((r) => r.data);
+
 export const uploadReceipt = (orderId, file) => {
   const fd = new FormData();
   fd.append('receipt', file);
-  return api
-    .post(`/orders/${orderId}/receipt`, fd, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-    .then((r) => r.data);
+  // ⚠️ NO poner Content-Type: multipart/form-data.
+  // Axios lo agrega solo, con el boundary correcto.
+  return api.post(`/orders/${orderId}/receipt`, fd).then((r) => r.data);
 };
+
 export const getMyOrders = () => api.get('/orders/me').then((r) => r.data);
 export const getMyCourses = () =>
   api.get('/orders/me/courses').then((r) => r.data);
@@ -54,11 +57,14 @@ export const getMyCourses = () =>
 export const getReceiptFile = (receiptUrl) => {
   const token = localStorage.getItem('comastech-token');
   return axios
-    .get(`${FILE_BASE}${receiptUrl}`, {
+    .get(`${API_BASE}${receiptUrl}`, {
       responseType: 'blob',
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
-    .then((r) => ({ url: URL.createObjectURL(r.data), type: r.data.type || '' }));
+    .then((r) => ({
+      url: URL.createObjectURL(r.data),
+      type: r.data.type || '',
+    }));
 };
 
 // ---------- ADMIN: ÓRDENES ----------
@@ -71,24 +77,20 @@ export const adminUpdateOrder = (id, payload) =>
   api.patch(`/admin/orders/${id}`, payload).then((r) => r.data);
 
 // ---------- ADMIN: CURSOS ----------
-export const adminUpdateCourse = (id, formData) =>
-  api
-    .put(`/courses/${id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-    .then((r) => r.data);
+export const adminUpdateCourse = (id, formData) => {
+  // ⚠️ NO poner Content-Type: multipart/form-data.
+  return api.put(`/courses/${id}`, formData).then((r) => r.data);
+};
 
 // ---------- SETTINGS (público) ----------
 export const getHomeVideo = () =>
   api.get('/settings/home-video').then((r) => r.data);
 
 // ---------- SETTINGS (admin) ----------
-export const adminUpdateHomeVideo = (formData) =>
-  api
-    .put('/settings/home-video', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-    .then((r) => r.data);
+export const adminUpdateHomeVideo = (formData) => {
+  // ⚠️ NO poner Content-Type: multipart/form-data.
+  return api.put('/settings/home-video', formData).then((r) => r.data);
+};
 
 export const adminDeleteHomeVideo = () =>
   api.delete('/settings/home-video').then((r) => r.data);
@@ -97,4 +99,5 @@ export const adminDeleteHomeVideo = () =>
 export const sendContact = (payload) =>
   api.post('/contact', payload).then((r) => r.data);
 
+export { API_BASE };
 export default api;

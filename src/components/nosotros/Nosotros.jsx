@@ -21,8 +21,8 @@ export default function Nosotros() {
 
         <ul className="nosotros__stats">
           <li>
-            <span>+500</span>
-            <p>Alumnos formados</p>
+            <span>4</span>
+            <p>Alumnos en procesos </p>
           </li>
           <li>
             <span>+20</span>
