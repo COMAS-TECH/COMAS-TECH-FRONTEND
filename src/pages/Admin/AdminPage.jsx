@@ -16,7 +16,8 @@ export default function AdminPage() {
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [receipt, setReceipt] = useState(null); // { url, type } del comprobante abierto
+  const [receipt, setReceipt] = useState(null); // { url, type } del comprobante abierto elegantye
+  
   const [receiptLoading, setReceiptLoading] = useState(false);
 
   useEffect(() => {
