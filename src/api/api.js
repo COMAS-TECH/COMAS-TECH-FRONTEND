@@ -1,14 +1,27 @@
 import axios from 'axios';
 
-// Base del servidor SIN /api (para archivos de /uploads)
-const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:4000/api').replace(
-  /\/api\/?$/,
-  ''
-);
+// ============================================
+// CONFIGURACIÓN DE URL DEL BACKEND
+// ============================================
+// En producción (Vercel) usa Render.
+// En desarrollo (localhost) usa localhost.
+const isProduction = import.meta.env.PROD;
 
+const DEFAULT_API_URL = isProduction
+  ? 'https://comas-tech-backend.onrender.com/api'
+  : 'http://localhost:4000/api';
+
+const API_URL = import.meta.env.VITE_API_URL || DEFAULT_API_URL;
+
+// Base del servidor SIN /api (para archivos de /uploads)
+const API_BASE = API_URL.replace(/\/api\/?$/, '');
+
+// ============================================
+// CLIENTE AXIOS
+// ============================================
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api',
-  timeout: 60000, // 60s para que aguante subir videos
+  baseURL: API_URL,
+  timeout: 60000, // 60s para subir videos
 });
 
 // Imagen por defecto para portadas de cursos
@@ -42,8 +55,6 @@ export const createOrder = (payload) =>
 export const uploadReceipt = (orderId, file) => {
   const fd = new FormData();
   fd.append('receipt', file);
-  // ⚠️ NO poner Content-Type: multipart/form-data.
-  // Axios lo agrega solo, con el boundary correcto.
   return api.post(`/orders/${orderId}/receipt`, fd).then((r) => r.data);
 };
 
@@ -51,9 +62,7 @@ export const getMyOrders = () => api.get('/orders/me').then((r) => r.data);
 export const getMyCourses = () =>
   api.get('/orders/me/courses').then((r) => r.data);
 
-// ---------- ARCHIVOS PROTEGIDOS (comprobantes con token) ----------
-// Descarga el comprobante con la sesion del usuario (el backend lo exige)
-// y devuelve una URL temporal para mostrarlo.
+// ---------- ARCHIVOS PROTEGIDOS ----------
 export const getReceiptFile = (receiptUrl) => {
   const token = localStorage.getItem('comastech-token');
   return axios
@@ -77,20 +86,15 @@ export const adminUpdateOrder = (id, payload) =>
   api.patch(`/admin/orders/${id}`, payload).then((r) => r.data);
 
 // ---------- ADMIN: CURSOS ----------
-export const adminUpdateCourse = (id, formData) => {
-  // ⚠️ NO poner Content-Type: multipart/form-data.
-  return api.put(`/courses/${id}`, formData).then((r) => r.data);
-};
+export const adminUpdateCourse = (id, formData) =>
+  api.put(`/courses/${id}`, formData).then((r) => r.data);
 
-// ---------- SETTINGS (público) ----------
+// ---------- SETTINGS ----------
 export const getHomeVideo = () =>
   api.get('/settings/home-video').then((r) => r.data);
 
-// ---------- SETTINGS (admin) ----------
-export const adminUpdateHomeVideo = (formData) => {
-  // ⚠️ NO poner Content-Type: multipart/form-data.
-  return api.put('/settings/home-video', formData).then((r) => r.data);
-};
+export const adminUpdateHomeVideo = (formData) =>
+  api.put('/settings/home-video', formData).then((r) => r.data);
 
 export const adminDeleteHomeVideo = () =>
   api.delete('/settings/home-video').then((r) => r.data);
