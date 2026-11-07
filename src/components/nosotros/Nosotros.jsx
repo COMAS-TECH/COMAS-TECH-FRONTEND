@@ -1,5 +1,4 @@
-import './Nosotros.css';
-
+import './nosotros.css';
 export default function Nosotros() {
   return (
     <section id="nosotros" className="section">
