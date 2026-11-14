@@ -1,15 +1,39 @@
+/* ============================================
+   ADMIN CURSO EDIT
+   ============================================ */
+
+.admin-curso__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.admin-curso__title {
+  margin: 0;
+  text-align: left;
+}
+
+/* ---------- Formulario ---------- */
+
 .admin-curso__form {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 340px minmax(0, 1fr);
   gap: 32px;
   margin-top: 24px;
+  align-items: start;
 }
+
+/* ---------- Preview ---------- */
 
 .admin-curso__preview {
   display: flex;
   flex-direction: column;
   gap: 12px;
   align-items: flex-start;
+  min-width: 0;
 }
 
 .admin-curso__frame {
@@ -41,60 +65,139 @@
   cursor: pointer;
 }
 
+/* ---------- Campos ---------- */
+
 .admin-curso__fields {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  min-width: 0;
 }
 
-.admin-curso__fields label {
+.admin-curso__field {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 0.9rem;
+  min-width: 0;
+}
+
+.admin-curso__field label {
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-text);
 }
 
-.admin-curso__fields input,
-.admin-curso__fields textarea {
+.admin-curso__field input,
+.admin-curso__field textarea {
   padding: 10px 12px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   font: inherit;
   background: var(--color-surface);
   color: var(--color-text);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-.admin-curso__fields input:focus,
-.admin-curso__fields textarea:focus {
+.admin-curso__field input:focus,
+.admin-curso__field textarea:focus {
   outline: none;
   border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.12);
+}
+
+[data-theme='dark'] .admin-curso__field input:focus,
+[data-theme='dark'] .admin-curso__field textarea:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
 .admin-curso__row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  min-width: 0;
 }
 
+/* ---------- Checkboxes ---------- */
+
 .admin-curso__check {
+  display: flex !important;
   flex-direction: row !important;
   align-items: center;
-  gap: 8px !important;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
 }
+
+.admin-curso__check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* ---------- Acciones ---------- */
 
 .admin-curso__actions {
   display: flex;
   gap: 12px;
   margin-top: 12px;
+  flex-wrap: wrap;
 }
 
-@media (max-width: 768px) {
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
   .admin-curso__form {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
+
+  .admin-curso__preview {
+    align-items: center;
+    text-align: center;
+  }
+
+  .admin-curso__frame {
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-curso__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .admin-curso__title {
+    font-size: 1.35rem;
+  }
+
   .admin-curso__row {
     grid-template-columns: 1fr;
+  }
+
+  .admin-curso__actions {
+    gap: 10px;
+  }
+
+  .admin-curso__actions .btn {
+    flex: 1 1 calc(50% - 5px);
+  }
+}
+
+@media (max-width: 420px) {
+  .admin-curso__frame {
+    border-radius: var(--radius-md);
+  }
+
+  .admin-curso__actions .btn {
+    flex: 1 1 100%;
   }
 }

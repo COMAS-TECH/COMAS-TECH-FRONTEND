@@ -4,7 +4,6 @@ import { createOrder, uploadReceipt } from '../../api/api.js';
 import useFormValidation from '../../hooks/useFormValidation.js';
 import './CheckoutModal.css';
 
-// 👇 Edita estos datos con tu info real
 const PAYMENT_INFO = {
   yape: {
     label: 'Yape',
@@ -43,12 +42,10 @@ export default function CheckoutModal({ curso, onClose }) {
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // ============== PASO 1: Crear orden ==============
   const handleCreateOrder = async (e) => {
     e.preventDefault();
     setError(null);
 
-    // Validar todos los campos
     if (!form.validateAll()) {
       setError('Revisa los campos marcados en rojo.');
       return;
@@ -76,12 +73,10 @@ export default function CheckoutModal({ curso, onClose }) {
     }
   };
 
-  // ============== PASO 2: Subir comprobante ==============
   const handleUploadReceipt = async () => {
     if (!receiptFile || !order) return;
     setError(null);
 
-    // Validación de archivo
     const MAX_MB = 5;
     if (receiptFile.size > MAX_MB * 1024 * 1024) {
       setError(`El archivo supera los ${MAX_MB} MB permitidos.`);
@@ -89,7 +84,7 @@ export default function CheckoutModal({ curso, onClose }) {
     }
     const okTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
     if (!okTypes.includes(receiptFile.type)) {
-      setError('Solo se permiten imágenes JPG/PNG/WEBP o PDF.');
+      setError('Solo se permiten imagenes JPG/PNG/WEBP o PDF.');
       return;
     }
 
@@ -112,7 +107,6 @@ export default function CheckoutModal({ curso, onClose }) {
 
   const currentStep = success ? 3 : order ? 2 : 1;
 
-  // Helper para clases de error
   const fieldClass = (name) =>
     `field ${form.errors[name] && form.touched[name] ? 'has-error' : ''}`;
   const errorMsg = (name) =>
@@ -121,8 +115,14 @@ export default function CheckoutModal({ curso, onClose }) {
     ) : null;
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="checkout-title"
+    >
+      <div className="modal modal--checkout" onClick={(e) => e.stopPropagation()}>
         <button
           className="modal__close"
           onClick={onClose}
@@ -146,7 +146,7 @@ export default function CheckoutModal({ curso, onClose }) {
               } ${currentStep > s.n ? 'is-done' : ''}`}
             >
               <span className="checkout-step__num">
-                {currentStep > s.n ? '✓' : s.n}
+                {currentStep > s.n ? 'OK' : s.n}
               </span>
               <span className="checkout-step__label">{s.label}</span>
             </div>
@@ -159,7 +159,7 @@ export default function CheckoutModal({ curso, onClose }) {
           </div>
         </div>
 
-        {/* ============ PASO 3: ÉXITO ============ */}
+        {/* ============ PASO 3: EXITO ============ */}
         {success && (
           <div className="modal__success">
             <div className="modal__success-icon">
@@ -173,10 +173,10 @@ export default function CheckoutModal({ curso, onClose }) {
                 />
               </svg>
             </div>
-            <h3>¡Comprobante enviado!</h3>
+            <h3>Comprobante enviado</h3>
             <p className="text-muted modal__note">
-              Un administrador revisará tu pago. Una vez confirmado, el curso
-              aparecerá abierto en <strong>Mis cursos</strong>.
+              Un administrador revisara tu pago. Una vez confirmado, el curso
+              aparecera abierto en <strong>Mis cursos</strong>.
             </p>
             <button className="btn btn--block" onClick={onClose} type="button">
               Entendido
@@ -188,7 +188,7 @@ export default function CheckoutModal({ curso, onClose }) {
         {!success && order && (
           <div className="checkout-paso">
             <header className="modal__header">
-              <h3>Realiza tu pago</h3>
+              <h3 id="checkout-title">Realiza tu pago</h3>
               <p className="text-muted">{curso.title}</p>
             </header>
 
@@ -239,15 +239,15 @@ export default function CheckoutModal({ curso, onClose }) {
                 >
                   {method.label}
                 </span>
-                <p className="pago-card__label">Número</p>
+                <p className="pago-card__label">Numero</p>
                 <p className="pago-card__number">{method.number}</p>
                 <p className="pago-card__holder">{method.holder}</p>
               </div>
             </div>
 
             <p className="text-muted modal__note">
-              Escanea el QR o envía el monto al número. Luego{' '}
-              <strong>sube tu captura</strong> aquí abajo.
+              Escanea el QR o envia el monto al numero. Luego{' '}
+              <strong>sube tu captura</strong> aqui abajo.
             </p>
 
             <div className="upload-receipt">
@@ -264,7 +264,7 @@ export default function CheckoutModal({ curso, onClose }) {
                   }
                 />
                 <span className="upload-receipt__icon">
-                  {receiptFile ? '✅' : '📸'}
+                  {receiptFile ? 'LISTO' : 'SUBIR'}
                 </span>
                 <span className="upload-receipt__text">
                   {receiptFile
@@ -274,7 +274,7 @@ export default function CheckoutModal({ curso, onClose }) {
                 <span className="upload-receipt__hint text-muted">
                   {receiptFile
                     ? 'Listo para enviar'
-                    : 'JPG, PNG, WEBP o PDF · máx 5 MB'}
+                    : 'JPG, PNG, WEBP o PDF - max 5 MB'}
                 </span>
               </label>
 
@@ -309,15 +309,15 @@ export default function CheckoutModal({ curso, onClose }) {
         {!success && !order && (
           <div className="checkout-paso">
             <header className="modal__header">
-              <h3>Inscripción</h3>
+              <h3 id="checkout-title">Inscripcion</h3>
               <p className="text-muted">{curso.title}</p>
             </header>
 
             <form className="form" onSubmit={handleCreateOrder} noValidate>
-              {/* Nombre */}
-              <label className={fieldClass('full_name')}>
-                Nombre completo
+              <div className={fieldClass('full_name')}>
+                <label htmlFor="checkout-name">Nombre completo</label>
                 <input
+                  id="checkout-name"
                   name="full_name"
                   value={form.values.full_name}
                   onChange={form.handleChange}
@@ -327,13 +327,13 @@ export default function CheckoutModal({ curso, onClose }) {
                   required
                 />
                 {errorMsg('full_name')}
-              </label>
+              </div>
 
               <div className="form__row">
-                {/* Correo */}
-                <label className={fieldClass('email')}>
-                  Correo
+                <div className={fieldClass('email')}>
+                  <label htmlFor="checkout-email">Correo</label>
                   <input
+                    id="checkout-email"
                     type="email"
                     name="email"
                     value={form.values.email}
@@ -344,12 +344,12 @@ export default function CheckoutModal({ curso, onClose }) {
                     required
                   />
                   {errorMsg('email')}
-                </label>
+                </div>
 
-                {/* Teléfono: SOLO NÚMEROS, máximo 15 */}
-                <label className={fieldClass('phone')}>
-                  Teléfono
+                <div className={fieldClass('phone')}>
+                  <label htmlFor="checkout-phone">Telefono</label>
                   <input
+                    id="checkout-phone"
                     type="tel"
                     name="phone"
                     value={form.values.phone}
@@ -362,13 +362,13 @@ export default function CheckoutModal({ curso, onClose }) {
                     required
                   />
                   {errorMsg('phone')}
-                </label>
+                </div>
               </div>
 
-              {/* Documento: SOLO NÚMEROS, máximo 12 */}
-              <label className={fieldClass('document_number')}>
-                N° de documento
+              <div className={fieldClass('document_number')}>
+                <label htmlFor="checkout-doc">N de documento</label>
                 <input
+                  id="checkout-doc"
                   name="document_number"
                   value={form.values.document_number}
                   onChange={form.handleChange}
@@ -380,28 +380,27 @@ export default function CheckoutModal({ curso, onClose }) {
                   required
                 />
                 {errorMsg('document_number')}
-              </label>
+              </div>
 
-              {/* Plan de pago */}
               {curso.payment_plans?.length > 0 && (
-                <label>
-                  Plan de pago
+                <div className="field">
+                  <label htmlFor="checkout-plan">Plan de pago</label>
                   <select
+                    id="checkout-plan"
                     value={planId}
                     onChange={(e) => setPlanId(e.target.value)}
                   >
                     {curso.payment_plans.map((p) => (
                       <option key={p.id} value={p.id}>
-                        {p.name} — S/ {Number(p.total_amount).toFixed(2)}
+                        {p.name} - S/ {Number(p.total_amount).toFixed(2)}
                       </option>
                     ))}
                   </select>
-                </label>
+                </div>
               )}
 
-              {/* Método de pago */}
               <div className="modal__field">
-                <span className="modal__field-label">Método de pago</span>
+                <span className="modal__field-label">Metodo de pago</span>
                 <div className="modal__methods">
                   {['yape', 'plin'].map((m) => (
                     <label

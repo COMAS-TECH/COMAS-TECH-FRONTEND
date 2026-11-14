@@ -1,43 +1,89 @@
+/* ============================================
+   CONTACTO
+   ============================================ */
+
 .contacto__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: start;
+  display: flex;
+  justify-content: center;
+}
+
+.contacto__info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 720px;
+  min-width: 0;
 }
 
 .contacto__title {
-  text-align: left;
-  margin-bottom: 16px;
+  text-align: center;
+  margin-bottom: 0;
 }
 
-.contacto__info p {
+.contacto__info > p {
   color: var(--color-text-muted);
-  margin-bottom: 20px;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  text-align: center;
 }
 
 .contacto__list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   color: var(--color-text-muted);
   font-size: 0.95rem;
 }
 
-.contacto__list strong {
-  color: var(--color-text);
+.contacto__list li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
 }
 
-@media (max-width: 860px) {
-  .contacto__inner {
+.contacto__list strong {
+  color: var(--color-text);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.contacto__list a {
+  color: var(--color-primary);
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.contacto__list a:hover {
+  text-decoration: underline;
+}
+
+.contacto__list span {
+  word-break: break-word;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 560px) {
+  .contacto__list {
     grid-template-columns: 1fr;
-    gap: 32px;
   }
 
-  .contacto__title {
-    text-align: center;
+  .contacto__list li {
+    padding: 14px;
   }
+}
 
-  .contacto__info {
-    text-align: center;
+@media (max-width: 360px) {
+  .contacto__list li {
+    padding: 12px;
   }
 }

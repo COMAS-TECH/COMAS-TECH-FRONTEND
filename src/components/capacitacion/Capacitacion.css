@@ -1,51 +1,149 @@
+/* ============================================
+   CAPACITACION
+   ============================================ */
+
+.capacitacion__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+
+.capacitacion__eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  padding: 6px 12px;
+  border: 1px solid var(--color-primary);
+  border-radius: 999px;
+}
+
+.capacitacion__title {
+  margin-bottom: 0;
+  max-width: 640px;
+}
+
+.capacitacion__subtitle {
+  margin-bottom: 0;
+  max-width: 620px;
+}
+
+/* ---------- Grid ---------- */
+
 .capacitacion__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
 }
 
+/* ---------- Tarjeta ---------- */
+
 .capacitacion__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px 24px 26px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 28px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: border-color var(--transition), transform var(--transition);
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+  overflow: hidden;
 }
 
-.capacitacion__card:hover {
-  border-color: var(--color-primary);
-  transform: translateY(-3px);
+.capacitacion__card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--color-primary);
 }
 
 .capacitacion__number {
-  font-size: 0.8rem;
-  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
   color: var(--color-primary);
-  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
-.capacitacion__card h3 {
+.capacitacion__card-title {
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--color-text);
+  line-height: 1.35;
 }
 
-.capacitacion__card p {
-  color: var(--color-text-muted);
+.capacitacion__card-text {
   font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
 }
 
-@media (max-width: 900px) {
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
   .capacitacion__grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 640px) {
+  .capacitacion__header {
+    margin-bottom: 32px;
+    gap: 8px;
+  }
+
   .capacitacion__grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .capacitacion__card {
+    padding: 22px 20px 20px;
+  }
+
+  .capacitacion__number {
+    width: 40px;
+    height: 40px;
+    font-size: 0.8rem;
+  }
+
+  .capacitacion__card-title {
+    font-size: 1rem;
+  }
+
+  .capacitacion__card-text {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .capacitacion__card {
+    padding: 18px 16px;
+  }
+
+  .capacitacion__eyebrow {
+    font-size: 0.7rem;
+    padding: 5px 10px;
   }
 }

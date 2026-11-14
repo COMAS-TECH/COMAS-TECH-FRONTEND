@@ -1,29 +1,125 @@
 /* ============================================
-   AUTH MODALS — Login y Registro
+   AUTH MODALS - Login y Registro
    ============================================ */
 
 .modal--auth {
-  max-width: 420px;
+  max-width: 440px;
+  width: 100%;
+  padding: 36px 32px 28px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+/* ---------- Header ---------- */
+
+.auth__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .auth__title {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 4px;
   color: var(--color-text);
-  text-align: center;
+  letter-spacing: -0.01em;
 }
 
 .auth__subtitle {
   font-size: 0.9rem;
-  margin-bottom: 20px;
-  text-align: center;
+  line-height: 1.5;
+  max-width: 340px;
+  margin: 0;
 }
+
+/* ---------- Formulario ---------- */
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.auth__form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.auth__form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.auth__form input {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 11px 14px;
+  font-size: 0.95rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.auth__form input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.12);
+}
+
+[data-theme='dark'] .auth__form input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* ---------- Error general ---------- */
+
+.auth__error {
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 10px 12px;
+  background: rgba(185, 28, 28, 0.06);
+  border: 1px solid rgba(185, 28, 28, 0.25);
+  border-radius: var(--radius-sm);
+  margin: 0;
+}
+
+[data-theme='dark'] .auth__error {
+  background: rgba(248, 113, 113, 0.08);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+/* ---------- Boton principal ---------- */
+
+.auth__form .btn--block {
+  margin-top: 4px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+}
+
+/* ---------- Switch login/registro ---------- */
 
 .auth__switch {
   text-align: center;
   font-size: 0.85rem;
-  margin-top: 4px;
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
 }
 
 .auth__switch button {
@@ -32,26 +128,80 @@
   color: var(--color-primary);
   font-weight: 700;
   cursor: pointer;
-  text-decoration: underline;
   padding: 0;
   font-size: inherit;
+  text-decoration: underline;
 }
 
-/* ---------- Inputs (mismo fix) ---------- */
-.modal--auth .form input,
-.modal--auth .form select,
-.modal--auth .form textarea {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  box-sizing: border-box;
+.auth__switch button:hover {
+  color: var(--color-primary-hover);
 }
 
-.modal--auth .form label {
-  min-width: 0;
+/* ---------- Boton cerrar ---------- */
+
+.modal--auth .modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
-.modal--auth .form__row,
-.modal--auth .form__row > label {
-  min-width: 0;
+.modal--auth .modal__close:hover {
+  color: var(--color-text);
+  border-color: var(--color-primary);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 480px) {
+  .modal--auth {
+    padding: 28px 20px 22px;
+    border-radius: var(--radius-md);
+  }
+
+  .auth__header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+  }
+
+  .auth__title {
+    font-size: 1.2rem;
+  }
+
+  .auth__subtitle {
+    font-size: 0.85rem;
+  }
+
+  .auth__form input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .auth__form .btn--block {
+    padding: 11px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .modal--auth {
+    padding: 24px 16px 18px;
+  }
+
+  .auth__title {
+    font-size: 1.1rem;
+  }
 }

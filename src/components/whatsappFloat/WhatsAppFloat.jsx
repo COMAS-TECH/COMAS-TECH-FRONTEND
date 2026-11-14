@@ -1,15 +1,14 @@
 import './WhatsAppFloat.css';
 
-// Número de WhatsApp (formato internacional, sin + ni espacios)
 const PHONE = '51987654321';
 
-// Mensaje predefinido que se envía al abrir el chat
-const DEFAULT_MESSAGE = 'Hola Comas TECH 👋, quisiera más información sobre sus cursos.';
+const DEFAULT_MESSAGE =
+  'Hola Comas TECH, quisiera mas informacion sobre sus cursos.';
 
 export default function WhatsAppFloat({
   phone = PHONE,
   message = DEFAULT_MESSAGE,
-  label = '¿Necesitas ayuda? Escríbenos',
+  label = 'Necesitas ayuda? Escribenos',
 }) {
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
@@ -19,13 +18,12 @@ export default function WhatsAppFloat({
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-float"
-      aria-label="Escríbenos por WhatsApp"
-      title="Escríbenos por WhatsApp"
+      aria-label="Escribenos por WhatsApp"
+      title="Escribenos por WhatsApp"
     >
       <span className="whatsapp-float__tooltip">{label}</span>
 
       <span className="whatsapp-float__button">
-        {/* Ícono oficial de WhatsApp (SVG inline, sin dependencias) */}
         <svg
           viewBox="0 0 32 32"
           xmlns="http://www.w3.org/2000/svg"

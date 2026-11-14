@@ -1,12 +1,11 @@
-import { resolveImageUrl } from '../../utils/imageUrl.js';
+import { resolveCourseImage } from '../../api/api.js';
 import './CursoCard.css';
 
 export default function CursoCard({ curso, onInscribirme }) {
-  const imgSrc = resolveImageUrl(curso.image_url);
+  const imgSrc = resolveCourseImage(curso.image_url);
 
   return (
     <article className="curso-card">
-      {/* Marco de la foto */}
       <div className="curso-card__media">
         {imgSrc ? (
           <img
@@ -24,13 +23,12 @@ export default function CursoCard({ curso, onInscribirme }) {
         )}
       </div>
 
-      {/* Texto debajo de la foto */}
       <div className="curso-card__body">
         <span className="curso-card__duration">
           {curso.duration_weeks
             ? `${curso.duration_weeks} semanas`
             : curso.duration || ''}
-          {curso.modality ? ` · ${curso.modality}` : ''}
+          {curso.modality ? ` - ${curso.modality}` : ''}
         </span>
 
         <h3 className="curso-card__title">{curso.title}</h3>

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCourses } from '../../api/api.js';
+import { getCourses, resolveImageUrl } from '../../api/api.js';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { resolveImageUrl } from '../../utils/imageUrl.js';
 import './AdminCursos.css';
 
 export default function AdminCursos() {
@@ -47,7 +46,7 @@ export default function AdminCursos() {
             type="button"
             onClick={() => navigate('/admin')}
           >
-            ← Volver al panel
+            Volver al panel
           </button>
         </div>
 

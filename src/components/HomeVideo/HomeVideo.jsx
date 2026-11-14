@@ -1,7 +1,20 @@
 import { useEffect, useState } from 'react';
-import { getHomeVideo } from '../../api/api.js';
-import { resolveImageUrl } from '../../utils/imageUrl.js';
+import { getHomeVideo, API_BASE } from '../../api/api.js';
 import './HomeVideo.css';
+
+function resolveVideoUrl(url) {
+  if (!url) return null;
+  if (/^https?:\/\//i.test(url) || url.startsWith('data:')) return url;
+  if (url.startsWith('/')) return `${API_BASE}${url}`;
+  return `${API_BASE}/${url}`;
+}
+
+function extractYouTubeId(url) {
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/
+  );
+  return match ? match[1] : null;
+}
 
 export default function HomeVideo() {
   const [data, setData] = useState(null);
@@ -24,23 +37,25 @@ export default function HomeVideo() {
     };
   }, []);
 
-  // Sin video configurado → no mostramos la sección
-  if (loading || !data?.video_url) return null;
+  if (loading) return null;
 
-  const src = resolveImageUrl(data.video_url);
+  // Si la API no devuelve video, usamos el archivo que ya esta en Render
+  const rawUrl =
+    data?.video_url ||
+    '/uploads/home-video/home-video-1791174363925-227232.mp4';
 
-  // Detectar si es YouTube (por si en algún momento quieres soportarlo)
-  const isYouTube = /youtube\.com|youtu\.be/.test(data.video_url);
-  const youtubeId = isYouTube ? extractYouTubeId(data.video_url) : null;
+  const src = resolveVideoUrl(rawUrl);
+  const isYouTube = /youtube\.com|youtu\.be/.test(rawUrl);
+  const youtubeId = isYouTube ? extractYouTubeId(rawUrl) : null;
 
   return (
     <section className="section home-video">
       <div className="container">
         <h2 className="section__title">
-          {data.title || 'Conoce Comas TECH'}
+          {data?.title || 'Conoce Comas TECH'}
         </h2>
         <p className="section__subtitle">
-          Formación tecnológica para todas las edades.
+          Formacion tecnologica para todas las edades.
         </p>
 
         <div className="home-video__frame">
@@ -48,7 +63,7 @@ export default function HomeVideo() {
             <iframe
               className="home-video__iframe"
               src={`https://www.youtube.com/embed/${youtubeId}`}
-              title="Video de presentación"
+              title="Video de presentacion"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
@@ -67,11 +82,4 @@ export default function HomeVideo() {
       </div>
     </section>
   );
-}
-
-function extractYouTubeId(url) {
-  const match = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/
-  );
-  return match ? match[1] : null;
 }

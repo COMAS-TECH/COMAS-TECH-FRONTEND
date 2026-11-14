@@ -48,20 +48,37 @@ export default function RegisterModal({ onClose, onSwitchToLogin, onSuccess }) {
     ) : null;
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="register-title"
+    >
       <div className="modal modal--auth" onClick={(e) => e.stopPropagation()}>
-        <button className="modal__close" onClick={onClose} aria-label="Cerrar" type="button">
+        <button
+          className="modal__close"
+          onClick={onClose}
+          aria-label="Cerrar"
+          type="button"
+        >
           ×
         </button>
-        <h3 className="auth__title">Crear cuenta</h3>
-        <p className="auth__subtitle text-muted">
-          Regístrate para inscribirte en nuestros cursos.
-        </p>
 
-        <form className="form" onSubmit={handleSubmit} noValidate>
-          <label className={fieldClass('full_name')}>
-            Nombre completo
+        <header className="auth__header">
+          <h3 className="auth__title" id="register-title">
+            Crear cuenta
+          </h3>
+          <p className="auth__subtitle text-muted">
+            Registrate para inscribirte en nuestros cursos.
+          </p>
+        </header>
+
+        <form className="form auth__form" onSubmit={handleSubmit} noValidate>
+          <div className={fieldClass('full_name')}>
+            <label htmlFor="register-name">Nombre completo</label>
             <input
+              id="register-name"
               name="full_name"
               value={form.values.full_name}
               onChange={form.handleChange}
@@ -71,11 +88,12 @@ export default function RegisterModal({ onClose, onSwitchToLogin, onSuccess }) {
               required
             />
             {errorMsg('full_name')}
-          </label>
+          </div>
 
-          <label className={fieldClass('email')}>
-            Correo
+          <div className={fieldClass('email')}>
+            <label htmlFor="register-email">Correo</label>
             <input
+              id="register-email"
               type="email"
               name="email"
               value={form.values.email}
@@ -86,11 +104,12 @@ export default function RegisterModal({ onClose, onSwitchToLogin, onSuccess }) {
               required
             />
             {errorMsg('email')}
-          </label>
+          </div>
 
-          <label className={fieldClass('password')}>
-            Contraseña
+          <div className={fieldClass('password')}>
+            <label htmlFor="register-password">Contrasena</label>
             <input
+              id="register-password"
               type="password"
               name="password"
               value={form.values.password}
@@ -101,11 +120,12 @@ export default function RegisterModal({ onClose, onSwitchToLogin, onSuccess }) {
               required
             />
             {errorMsg('password')}
-          </label>
+          </div>
 
-          <label className={fieldClass('phone')}>
-            Teléfono (opcional)
+          <div className={fieldClass('phone')}>
+            <label htmlFor="register-phone">Telefono (opcional)</label>
             <input
+              id="register-phone"
               type="tel"
               name="phone"
               value={form.values.phone}
@@ -117,18 +137,18 @@ export default function RegisterModal({ onClose, onSwitchToLogin, onSuccess }) {
               autoComplete="tel"
             />
             {errorMsg('phone')}
-          </label>
+          </div>
 
-          {error && <p className="text-error">{error}</p>}
+          {error && <p className="text-error auth__error">{error}</p>}
 
           <button className="btn btn--block" type="submit" disabled={loading}>
             {loading ? 'Creando cuenta...' : 'Crear cuenta'}
           </button>
 
           <p className="auth__switch text-muted">
-            ¿Ya tienes cuenta?{' '}
+            Ya tienes cuenta?{' '}
             <button type="button" onClick={onSwitchToLogin}>
-              Inicia sesión
+              Inicia sesion
             </button>
           </p>
         </form>

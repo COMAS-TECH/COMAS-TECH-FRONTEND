@@ -27,7 +27,7 @@ export default function LoginModal({ onClose, onSwitchToRegister, onSuccess }) {
       onSuccess?.(user);
       onClose?.();
     } catch (err) {
-      setError(err?.response?.data?.message || 'No se pudo iniciar sesión');
+      setError(err?.response?.data?.message || 'No se pudo iniciar sesion');
     } finally {
       setLoading(false);
     }
@@ -41,20 +41,37 @@ export default function LoginModal({ onClose, onSwitchToRegister, onSuccess }) {
     ) : null;
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="login-title"
+    >
       <div className="modal modal--auth" onClick={(e) => e.stopPropagation()}>
-        <button className="modal__close" onClick={onClose} aria-label="Cerrar" type="button">
+        <button
+          className="modal__close"
+          onClick={onClose}
+          aria-label="Cerrar"
+          type="button"
+        >
           ×
         </button>
-        <h3 className="auth__title">Iniciar sesión</h3>
-        <p className="auth__subtitle text-muted">
-          Ingresa para inscribirte y ver tus cursos.
-        </p>
 
-        <form className="form" onSubmit={handleSubmit} noValidate>
-          <label className={fieldClass('email')}>
-            Correo
+        <header className="auth__header">
+          <h3 className="auth__title" id="login-title">
+            Iniciar sesion
+          </h3>
+          <p className="auth__subtitle text-muted">
+            Ingresa para inscribirte y ver tus cursos.
+          </p>
+        </header>
+
+        <form className="form auth__form" onSubmit={handleSubmit} noValidate>
+          <div className={fieldClass('email')}>
+            <label htmlFor="login-email">Correo</label>
             <input
+              id="login-email"
               type="email"
               name="email"
               value={form.values.email}
@@ -65,11 +82,12 @@ export default function LoginModal({ onClose, onSwitchToRegister, onSuccess }) {
               required
             />
             {errorMsg('email')}
-          </label>
+          </div>
 
-          <label className={fieldClass('password')}>
-            Contraseña
+          <div className={fieldClass('password')}>
+            <label htmlFor="login-password">Contrasena</label>
             <input
+              id="login-password"
               type="password"
               name="password"
               value={form.values.password}
@@ -80,18 +98,18 @@ export default function LoginModal({ onClose, onSwitchToRegister, onSuccess }) {
               required
             />
             {errorMsg('password')}
-          </label>
+          </div>
 
-          {error && <p className="text-error">{error}</p>}
+          {error && <p className="text-error auth__error">{error}</p>}
 
           <button className="btn btn--block" type="submit" disabled={loading}>
             {loading ? 'Ingresando...' : 'Ingresar'}
           </button>
 
           <p className="auth__switch text-muted">
-            ¿No tienes cuenta?{' '}
+            No tienes cuenta?{' '}
             <button type="button" onClick={onSwitchToRegister}>
-              Regístrate
+              Registrate
             </button>
           </p>
         </form>

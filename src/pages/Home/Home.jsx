@@ -9,10 +9,8 @@ export default function Home({ onInscribirme }) {
     <>
       <Hero />
 
-      {/* Video */}
       <HomeVideo />
 
-      {/* Cursos destacados */}
       <section className="section">
         <div className="container">
           <h2 className="section__title">Cursos destacados</h2>

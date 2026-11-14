@@ -22,6 +22,12 @@ export default function Navbar() {
 
   const closeMenu = () => setOpen(false);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+    closeMenu();
+  };
+
   return (
     <>
       <header className="navbar">
@@ -51,6 +57,43 @@ export default function Navbar() {
                 Admin
               </NavLink>
             )}
+
+            {/* Acciones en movil: se muestran dentro del menu desplegable */}
+            <div className="navbar__links-actions">
+              {user ? (
+                <>
+                  <span className="navbar__links-user">
+                    Sesion: {user.full_name.split(' ')[0]}
+                  </span>
+                  <button
+                    type="button"
+                    className="navbar__links-btn"
+                    onClick={handleLogout}
+                  >
+                    Salir
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className="navbar__links-btn"
+                  onClick={() => {
+                    setAuthModal('login');
+                    closeMenu();
+                  }}
+                >
+                  Ingresar
+                </button>
+              )}
+
+              <button
+                type="button"
+                className="navbar__links-btn"
+                onClick={toggleTheme}
+              >
+                Tema: {theme === 'light' ? 'Oscuro' : 'Claro'}
+              </button>
+            </div>
           </nav>
 
           <div className="navbar__actions">
@@ -65,14 +108,13 @@ export default function Navbar() {
 
             {user ? (
               <div className="navbar__user">
-                <span className="navbar__user-name">{user.full_name.split(' ')[0]}</span>
+                <span className="navbar__user-name">
+                  {user.full_name.split(' ')[0]}
+                </span>
                 <button
                   className="navbar__theme"
                   type="button"
-                  onClick={() => {
-                    logout();
-                    navigate('/');
-                  }}
+                  onClick={handleLogout}
                 >
                   Salir
                 </button>
@@ -89,9 +131,10 @@ export default function Navbar() {
 
             <button
               type="button"
-              className="navbar__toggle"
+              className={`navbar__toggle ${open ? 'is-open' : ''}`}
               onClick={() => setOpen((v) => !v)}
               aria-label="Abrir menu"
+              aria-expanded={open}
             >
               <span />
               <span />

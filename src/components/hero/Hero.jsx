@@ -7,28 +7,40 @@ export default function Hero() {
       <div className="container hero__inner">
         <div className="hero__content">
           <span className="hero__badge">Comas TECH</span>
+
           <h1 className="hero__title">
             Aprende las <span>competencias digitales</span> que el futuro pide
           </h1>
- <p className="hero__text">
-  Cursos prácticos de programación, ciberseguridad, diseño y
-  automatización con IA para personas de todas las edades en Comas, Lima.
-</p>
+
+          <p className="hero__text">
+            Cursos practicos de programacion, ciberseguridad, diseno y
+            automatizacion con IA para personas de todas las edades en Comas,
+            Lima.
+          </p>
+
           <div className="hero__actions">
             <Link to="/cursos" className="btn">
               Ver cursos
             </Link>
             <Link to="/contacto" className="btn btn--ghost">
-              Contáctanos
+              Contactanos
             </Link>
           </div>
+
+          <ul className="hero__points">
+            <li>Docentes en actividad</li>
+            <li>Proyectos reales</li>
+            <li>Certificacion al finalizar</li>
+          </ul>
         </div>
 
         <div className="hero__image">
-          <img
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80"
-            alt="Jóvenes aprendiendo tecnología"
-          />
+          <div className="hero__image-frame">
+            <img
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80"
+              alt="Jovenes aprendiendo tecnologia"
+            />
+          </div>
         </div>
       </div>
     </section>

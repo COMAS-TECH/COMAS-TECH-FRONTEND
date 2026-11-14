@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getCourseById, adminUpdateCourse } from '../../api/api.js';
-import { resolveImageUrl } from '../../utils/imageUrl.js';
+import {
+  getCourseById,
+  adminUpdateCourse,
+  resolveImageUrl,
+} from '../../api/api.js';
 import './AdminCursoEdit.css';
 
 export default function AdminCursoEdit() {
@@ -92,10 +95,20 @@ export default function AdminCursoEdit() {
   return (
     <section className="section">
       <div className="container">
-        <h1 className="section__title">Editar curso #{curso.id}</h1>
+        <header className="admin-curso__header">
+          <h1 className="section__title admin-curso__title">
+            Editar curso #{curso.id}
+          </h1>
+          <button
+            className="btn btn--sm btn--ghost"
+            type="button"
+            onClick={() => navigate('/admin/cursos')}
+          >
+            Volver a la lista
+          </button>
+        </header>
 
         <form className="admin-curso__form" onSubmit={handleSubmit}>
-          {/* Columna izquierda: preview imagen */}
           <div className="admin-curso__preview">
             <div className="admin-curso__frame">
               {preview ? (
@@ -114,66 +127,75 @@ export default function AdminCursoEdit() {
                 hidden
               />
             </label>
-            <small className="text-muted">JPG, PNG o WEBP · máx. 5MB</small>
+            <small className="text-muted">JPG, PNG o WEBP - max. 5MB</small>
           </div>
 
-          {/* Columna derecha: campos */}
           <div className="admin-curso__fields">
-            <label>
-              Título
-              <input name="title" value={curso.title} onChange={handleChange} />
-            </label>
+            <div className="admin-curso__field">
+              <label htmlFor="curso-title">Titulo</label>
+              <input
+                id="curso-title"
+                name="title"
+                value={curso.title}
+                onChange={handleChange}
+              />
+            </div>
 
-            <label>
-              Descripción
+            <div className="admin-curso__field">
+              <label htmlFor="curso-desc">Descripcion</label>
               <textarea
+                id="curso-desc"
                 name="description"
                 value={curso.description || ''}
                 onChange={handleChange}
                 rows={4}
               />
-            </label>
+            </div>
 
-            <label>
-              Categoría
+            <div className="admin-curso__field">
+              <label htmlFor="curso-category">Categoria</label>
               <input
+                id="curso-category"
                 name="category"
                 value={curso.category || ''}
                 onChange={handleChange}
               />
-            </label>
+            </div>
 
             <div className="admin-curso__row">
-              <label>
-                Duración (semanas)
+              <div className="admin-curso__field">
+                <label htmlFor="curso-duration">Duracion (semanas)</label>
                 <input
+                  id="curso-duration"
                   type="number"
                   name="duration_weeks"
                   value={curso.duration_weeks ?? ''}
                   onChange={handleChange}
                 />
-              </label>
+              </div>
 
-              <label>
-                Modalidad
+              <div className="admin-curso__field">
+                <label htmlFor="curso-modality">Modalidad</label>
                 <input
+                  id="curso-modality"
                   name="modality"
                   value={curso.modality || ''}
                   onChange={handleChange}
                 />
-              </label>
+              </div>
             </div>
 
-            <label>
-              Precio (S/)
+            <div className="admin-curso__field">
+              <label htmlFor="curso-price">Precio (S/)</label>
               <input
+                id="curso-price"
                 type="number"
                 step="0.01"
                 name="price"
                 value={curso.price}
                 onChange={handleChange}
               />
-            </label>
+            </div>
 
             <label className="admin-curso__check">
               <input
@@ -182,7 +204,7 @@ export default function AdminCursoEdit() {
                 checked={!!curso.has_certification}
                 onChange={handleChange}
               />
-              Tiene certificación
+              Tiene certificacion
             </label>
 
             <label className="admin-curso__check">

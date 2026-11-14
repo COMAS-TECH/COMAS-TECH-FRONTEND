@@ -1,10 +1,13 @@
+/* ============================================
+   NAVBAR
+   ============================================ */
+
 .navbar {
   position: sticky;
   top: 0;
   z-index: 50;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
-  backdrop-filter: blur(8px);
 }
 
 .navbar__inner {
@@ -12,6 +15,7 @@
   align-items: center;
   justify-content: space-between;
   height: 72px;
+  gap: 16px;
 }
 
 .navbar__logo {
@@ -19,6 +23,7 @@
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--color-text);
+  white-space: nowrap;
 }
 
 .navbar__logo span {
@@ -35,8 +40,8 @@
 
 .navbar__links a {
   color: var(--color-text-muted);
-  transition: color var(--transition);
   position: relative;
+  white-space: nowrap;
 }
 
 .navbar__links a:hover {
@@ -58,10 +63,43 @@
   border-radius: 2px;
 }
 
+/* Acciones dentro del menu movil (ocultas en escritorio) */
+.navbar__links-actions {
+  display: none;
+}
+
+.navbar__links-user {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.navbar__links-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}
+
+.navbar__links-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ============================================
+   ACCIONES ESCRITORIO
+   ============================================ */
+
 .navbar__actions {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .navbar__theme {
@@ -72,7 +110,7 @@
   padding: 8px 14px;
   font-size: 0.8rem;
   font-weight: 600;
-  transition: background var(--transition), border-color var(--transition);
+  white-space: nowrap;
 }
 
 .navbar__theme:hover {
@@ -81,63 +119,6 @@
   color: var(--color-primary);
 }
 
-.navbar__toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  padding: 6px;
-}
-
-.navbar__toggle span {
-  width: 22px;
-  height: 2px;
-  background: var(--color-text);
-  border-radius: 2px;
-  transition: transform var(--transition);
-}
-
-@media (max-width: 860px) {
-  .navbar__links {
-    position: absolute;
-    top: 72px;
-    left: 0;
-    right: 0;
-    background: var(--color-surface);
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    padding: 0;
-    border-bottom: 1px solid var(--color-border);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height var(--transition);
-  }
-
-  .navbar__links.is-open {
-    max-height: 320px;
-  }
-
-  .navbar__links a {
-    width: 100%;
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .navbar__links a.is-active::after {
-    display: none;
-  }
-
-  .navbar__toggle {
-    display: flex;
-  }
-
-  .navbar__theme {
-    padding: 7px 10px;
-    font-size: 0.75rem;
-  }
-}
 .navbar__user {
   display: flex;
   align-items: center;
@@ -148,4 +129,140 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--color-text);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================
+   BOTON HAMBURGUESA
+   ============================================ */
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 6px;
+  width: 40px;
+  height: 40px;
+}
+
+.navbar__toggle span {
+  width: 22px;
+  height: 2px;
+  background: var(--color-text);
+  border-radius: 2px;
+}
+
+.navbar__toggle.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar__toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar__toggle.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 960px) {
+  .navbar__links {
+    gap: 22px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .navbar__inner {
+    height: 64px;
+  }
+
+  .navbar__links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--color-border);
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  .navbar__links.is-open {
+    max-height: 520px;
+    overflow-y: auto;
+    visibility: visible;
+  }
+
+  .navbar__links a {
+    width: 100%;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.95rem;
+  }
+
+  .navbar__links a.is-active::after {
+    display: none;
+  }
+
+  .navbar__links-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 24px 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .navbar__toggle {
+    display: flex;
+  }
+
+  /* Ocultar acciones de escritorio en movil */
+  .navbar__actions > .navbar__theme,
+  .navbar__actions > .navbar__user {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar__logo {
+    font-size: 1.15rem;
+  }
+
+  .navbar__inner {
+    height: 60px;
+    gap: 8px;
+  }
+
+  .navbar__links {
+    top: 60px;
+  }
+
+  .navbar__links a {
+    padding: 14px 18px;
+    font-size: 0.9rem;
+  }
+
+  .navbar__links-actions {
+    padding: 14px 18px 18px;
+  }
+
+  .navbar__links-btn {
+    padding: 9px 14px;
+    font-size: 0.8rem;
+  }
 }

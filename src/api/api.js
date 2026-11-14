@@ -1,10 +1,8 @@
 import axios from 'axios';
 
 // ============================================
-// CONFIGURACIÓN DE URL DEL BACKEND
+// CONFIGURACION DE URL DEL BACKEND
 // ============================================
-// En producción (Vercel) usa Render.
-// En desarrollo (localhost) usa localhost.
 const isProduction = import.meta.env.PROD;
 
 const DEFAULT_API_URL = isProduction
@@ -21,7 +19,7 @@ const API_BASE = API_URL.replace(/\/api\/?$/, '');
 // ============================================
 const api = axios.create({
   baseURL: API_URL,
-  timeout: 60000, // 60s para subir videos
+  timeout: 60000,
 });
 
 // Imagen por defecto para portadas de cursos
@@ -36,19 +34,49 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// ---------- AUTH ----------
+// ============================================
+// HELPERS DE IMAGENES
+// ============================================
+
+/**
+ * Convierte una URL relativa del backend en URL absoluta.
+ * Si ya es absoluta (http/https) o data:, la devuelve tal cual.
+ * Devuelve null si no hay URL.
+ */
+export function resolveImageUrl(url) {
+  if (!url) return null;
+  if (/^https?:\/\//i.test(url) || url.startsWith('data:')) return url;
+  if (url.startsWith('/')) return `${API_BASE}${url}`;
+  return `${API_BASE}/${url}`;
+}
+
+/**
+ * Igual que resolveImageUrl pero para portadas de cursos:
+ * si no hay URL, devuelve la imagen por defecto (nunca null).
+ */
+export function resolveCourseImage(url) {
+  return resolveImageUrl(url) || DEFAULT_COURSE_IMAGE;
+}
+
+// ============================================
+// AUTH
+// ============================================
 export const registerUser = (payload) =>
   api.post('/auth/register', payload).then((r) => r.data);
 export const loginUser = (payload) =>
   api.post('/auth/login', payload).then((r) => r.data);
 export const getMe = () => api.get('/auth/me').then((r) => r.data);
 
-// ---------- CURSOS ----------
+// ============================================
+// CURSOS
+// ============================================
 export const getCourses = () => api.get('/courses').then((r) => r.data);
 export const getCourseById = (id) =>
   api.get(`/courses/${id}`).then((r) => r.data);
 
-// ---------- ORDENES ----------
+// ============================================
+// ORDENES
+// ============================================
 export const createOrder = (payload) =>
   api.post('/orders', payload).then((r) => r.data);
 
@@ -62,7 +90,9 @@ export const getMyOrders = () => api.get('/orders/me').then((r) => r.data);
 export const getMyCourses = () =>
   api.get('/orders/me/courses').then((r) => r.data);
 
-// ---------- ARCHIVOS PROTEGIDOS ----------
+// ============================================
+// ARCHIVOS PROTEGIDOS
+// ============================================
 export const getReceiptFile = (receiptUrl) => {
   const token = localStorage.getItem('comastech-token');
   return axios
@@ -76,7 +106,9 @@ export const getReceiptFile = (receiptUrl) => {
     }));
 };
 
-// ---------- ADMIN: ÓRDENES ----------
+// ============================================
+// ADMIN: ORDENES
+// ============================================
 export const adminStats = () => api.get('/admin/stats').then((r) => r.data);
 export const adminListOrders = (status) =>
   api
@@ -85,11 +117,15 @@ export const adminListOrders = (status) =>
 export const adminUpdateOrder = (id, payload) =>
   api.patch(`/admin/orders/${id}`, payload).then((r) => r.data);
 
-// ---------- ADMIN: CURSOS ----------
+// ============================================
+// ADMIN: CURSOS
+// ============================================
 export const adminUpdateCourse = (id, formData) =>
   api.put(`/courses/${id}`, formData).then((r) => r.data);
 
-// ---------- SETTINGS ----------
+// ============================================
+// SETTINGS
+// ============================================
 export const getHomeVideo = () =>
   api.get('/settings/home-video').then((r) => r.data);
 
@@ -99,9 +135,14 @@ export const adminUpdateHomeVideo = (formData) =>
 export const adminDeleteHomeVideo = () =>
   api.delete('/settings/home-video').then((r) => r.data);
 
-// ---------- CONTACTO ----------
+// ============================================
+// CONTACTO
+// ============================================
 export const sendContact = (payload) =>
   api.post('/contact', payload).then((r) => r.data);
 
+// ============================================
+// EXPORTS
+// ============================================
 export { API_BASE };
 export default api;

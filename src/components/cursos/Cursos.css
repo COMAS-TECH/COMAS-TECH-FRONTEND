@@ -1,10 +1,202 @@
-.cursos__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
+/* ============================================
+   CURSOS
+   ============================================ */
+
+.cursos {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.cursos__status {
+/* ---------- Header opcional ---------- */
+
+.cursos__header {
   text-align: center;
-  padding: 32px 0;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.cursos__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.cursos__subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* ---------- Meta (contador) ---------- */
+
+.cursos__meta {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.cursos__count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 4px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg-alt);
+}
+
+/* ---------- Grid ---------- */
+
+.cursos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.cursos__grid > * {
+  min-width: 0;
+}
+
+/* ---------- Estados ---------- */
+
+.cursos__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px 24px;
+  text-align: center;
+  background: var(--color-bg-alt);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.cursos__state--error {
+  background: rgba(185, 28, 28, 0.04);
+  border-color: rgba(185, 28, 28, 0.3);
+}
+
+[data-theme='dark'] .cursos__state--error {
+  background: rgba(248, 113, 113, 0.06);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.cursos__state-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.cursos__state--error .cursos__state-title {
+  color: var(--color-error);
+}
+
+.cursos__state-text {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  max-width: 460px;
+  line-height: 1.6;
+}
+
+/* ---------- Skeleton (estatico) ---------- */
+
+.cursos__skeleton {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.cursos__skeleton-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--color-bg-alt);
+}
+
+.cursos__skeleton-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 24px 24px;
+}
+
+.cursos__skeleton-line {
+  height: 10px;
+  border-radius: 6px;
+  background: var(--color-bg-alt);
+}
+
+.cursos__skeleton-line--sm {
+  width: 40%;
+}
+
+.cursos__skeleton-line--lg {
+  width: 70%;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .cursos__grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cursos__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cursos__title {
+    font-size: 1.5rem;
+  }
+
+  .cursos__subtitle {
+    font-size: 0.9rem;
+  }
+
+  .cursos__state {
+    padding: 32px 18px;
+  }
+
+  .cursos__state-title {
+    font-size: 0.95rem;
+  }
+
+  .cursos__state-text {
+    font-size: 0.85rem;
+  }
+
+  .cursos__skeleton-body {
+    padding: 16px 18px 20px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cursos__grid {
+    gap: 14px;
+  }
+
+  .cursos__count {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
+
+  .cursos__state {
+    padding: 26px 14px;
+  }
 }

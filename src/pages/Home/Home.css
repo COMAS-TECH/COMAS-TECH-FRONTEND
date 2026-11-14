@@ -3,3 +3,14 @@
   justify-content: center;
   margin-top: 40px;
 }
+
+@media (max-width: 560px) {
+  .home__more {
+    margin-top: 28px;
+  }
+
+  .home__more .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

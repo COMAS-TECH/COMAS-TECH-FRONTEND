@@ -11,19 +11,19 @@ export default function Footer() {
           <span className="footer__logo">
             Comas<span>TECH</span>
           </span>
-         <p>Competencias digitales para todas las edades en Comas.</p>
+          <p>Competencias digitales para todas las edades en Comas.</p>
         </div>
 
         <nav className="footer__links">
           <Link to="/cursos">Cursos</Link>
-          <Link to="/capacitacion">Capacitación</Link>
+          <Link to="/capacitacion">Capacitacion</Link>
           <Link to="/nosotros">Nosotros</Link>
           <Link to="/contacto">Contacto</Link>
         </nav>
       </div>
 
       <div className="container footer__bottom">
-        <span>© {year} Comas TECH. Todos los derechos reservados.</span>
+        <span>(c) {year} Comas TECH. Todos los derechos reservados.</span>
       </div>
     </footer>
   );

@@ -1,9 +1,20 @@
+/* ============================================
+   ADMIN CURSOS
+   ============================================ */
+
 .admin-cursos__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 24px;
   margin-top: 16px;
+  align-items: stretch;
 }
+
+.admin-cursos__grid > * {
+  min-width: 0;
+}
+
+/* ---------- Tarjeta ---------- */
 
 .admin-cursos__card {
   background: var(--color-surface);
@@ -12,15 +23,11 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform var(--transition), border-color var(--transition),
-    box-shadow var(--transition);
+  height: 100%;
+  min-width: 0;
 }
 
-.admin-cursos__card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
-}
+/* ---------- Media ---------- */
 
 .admin-cursos__media {
   width: 100%;
@@ -45,8 +52,10 @@
   font-size: 0.8rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
+  background: #1e293b;
 }
+
+/* ---------- Body ---------- */
 
 .admin-cursos__body {
   padding: 16px 18px 18px;
@@ -54,6 +63,7 @@
   flex-direction: column;
   gap: 8px;
   flex: 1;
+  min-width: 0;
 }
 
 .admin-cursos__cat {
@@ -69,6 +79,8 @@
   font-weight: 700;
   color: var(--color-text);
   flex: 1;
+  line-height: 1.35;
+  word-break: break-word;
 }
 
 .admin-cursos__footer {
@@ -77,10 +89,56 @@
   justify-content: space-between;
   gap: 10px;
   margin-top: 6px;
+  flex-wrap: wrap;
 }
 
 .admin-cursos__price {
   font-size: 1rem;
   font-weight: 800;
   color: var(--color-text);
+  white-space: nowrap;
+}
+
+.admin-cursos__footer .btn {
+  flex-shrink: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
+  .admin-cursos__grid {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-cursos__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-cursos__body {
+    padding: 14px 16px 16px;
+  }
+
+  .admin-cursos__title {
+    font-size: 0.95rem;
+  }
+
+  .admin-cursos__price {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .admin-cursos__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .admin-cursos__footer .btn {
+    width: 100%;
+  }
 }

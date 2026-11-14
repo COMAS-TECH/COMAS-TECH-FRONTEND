@@ -1,21 +1,20 @@
+/* ============================================
+   TARJETA DE CURSO
+   ============================================ */
+
 .curso-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  overflow: hidden; /* para que la imagen respete las esquinas */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform var(--transition), border-color var(--transition),
-    box-shadow var(--transition);
-}
-
-.curso-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
+  height: 100%;
+  min-width: 0;
 }
 
 /* ====== Marco de la foto ====== */
+
 .curso-card__media {
   position: relative;
   width: 100%;
@@ -29,11 +28,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
-}
-
-.curso-card:hover .curso-card__img {
-  transform: scale(1.05);
 }
 
 /* Placeholder cuando no hay imagen */
@@ -43,10 +37,10 @@
   display: grid;
   place-items: center;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
+  background: #1e293b;
 }
 
 .curso-card__media.is-empty::after {
@@ -56,19 +50,21 @@
   display: grid;
   place-items: center;
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
+  background: #1e293b;
 }
 
 /* ====== Contenido debajo ====== */
+
 .curso-card__body {
   padding: 20px 24px 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   flex: 1;
+  min-width: 0;
 }
 
 .curso-card__duration {
@@ -83,12 +79,16 @@
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--color-text);
+  line-height: 1.35;
+  word-break: break-word;
 }
 
 .curso-card__desc {
   font-size: 0.9rem;
   color: var(--color-text-muted);
   flex: 1;
+  line-height: 1.6;
+  word-break: break-word;
 }
 
 .curso-card__footer {
@@ -97,10 +97,61 @@
   justify-content: space-between;
   gap: 12px;
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 .curso-card__price {
   font-size: 1.05rem;
   font-weight: 800;
   color: var(--color-text);
+  white-space: nowrap;
+}
+
+.curso-card__footer .btn {
+  flex-shrink: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 640px) {
+  .curso-card__body {
+    padding: 16px 18px 20px;
+    gap: 10px;
+  }
+
+  .curso-card__title {
+    font-size: 1.05rem;
+  }
+
+  .curso-card__desc {
+    font-size: 0.875rem;
+  }
+
+  .curso-card__footer {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .curso-card__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .curso-card__body {
+    padding: 14px 16px 18px;
+  }
+
+  .curso-card__title {
+    font-size: 1rem;
+  }
+
+  .curso-card__price {
+    font-size: 1rem;
+  }
+
+  .curso-card__footer .btn {
+    width: 100%;
+  }
 }
