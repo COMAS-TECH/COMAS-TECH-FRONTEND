@@ -16,6 +16,9 @@ function extractYouTubeId(url) {
   return match ? match[1] : null;
 }
 
+// Video por defecto si la API no devuelve uno
+const FALLBACK_VIDEO = '/uploads/home-video/home-video-1791172816598-823605.mp4';
+
 export default function HomeVideo() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,11 +42,7 @@ export default function HomeVideo() {
 
   if (loading) return null;
 
-  // Si la API no devuelve video, usamos el archivo que ya esta en Render
-  const rawUrl =
-    data?.video_url ||
-    '/uploads/home-video/home-video-1791174363925-227232.mp4';
-
+  const rawUrl = data?.video_url || FALLBACK_VIDEO;
   const src = resolveVideoUrl(rawUrl);
   const isYouTube = /youtube\.com|youtu\.be/.test(rawUrl);
   const youtubeId = isYouTube ? extractYouTubeId(rawUrl) : null;
